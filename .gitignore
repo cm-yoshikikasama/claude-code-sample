@@ -1,0 +1,42 @@
+# Temporary files
+.tmp/
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# CDK
+cdk.out/
+.cdk.staging/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Claude Code
+CLAUDE.local.md
+.claude/settings.local.json
+tmp.md

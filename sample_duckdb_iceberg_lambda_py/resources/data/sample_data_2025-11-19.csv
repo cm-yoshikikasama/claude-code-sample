@@ -1,0 +1,4 @@
+id,date,sales_amount,quantity,region
+003,2025-11-19,1250.50,5,Tokyo
+004,2025-11-19,2340.75,10,Osaka
+005,2025-11-19,890.25,3,Nagoya

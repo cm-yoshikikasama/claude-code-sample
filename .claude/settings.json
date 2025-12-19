@@ -1,0 +1,142 @@
+{
+	"outputStyle": "Explanatory",
+	"env": {
+		"CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+		"BASH_DEFAULT_TIMEOUT_MS": "120000"
+	},
+	"permissions": {
+		"allow": [
+			"Bash(ls ./)",
+			"Bash(ls ./*)",
+			"Bash(cat ./*)",
+			"Bash(find ./)",
+			"Bash(tree:*)",
+			"Bash(head ./*)",
+			"Bash(tail ./*)",
+			"Bash(echo:*)",
+			"Bash(pwd)",
+			"Bash(cd ./)",
+			"Bash(mkdir -p ./**)",
+			"Bash(cp ./* ./)",
+			"Bash(mv ./* ./)",
+			"Bash(touch ./)",
+			"Bash(which:*)",
+			"Bash(env)",
+			"Bash(whoami)",
+			"Bash(date)",
+			"Bash(git status)",
+			"Bash(git diff)",
+			"Bash(git diff ./)",
+			"Bash(git log --oneline -10)",
+			"Bash(git branch)",
+			"Bash(git show HEAD)",
+			"Read(./**)",
+			"Edit(./**)",
+			"Grep(./**)",
+			"Glob(./**)",
+			"LS(./**)",
+			"Write(./**)",
+			"MultiEdit(./**)",
+			"TodoRead(**)",
+			"TodoWrite(**)",
+			"Task(**)",
+			"Skill(*)",
+			"WebFetch(domain:docs.aws.amazon.com)",
+			"WebFetch(domain:*.amazonaws.com)",
+			"WebFetch(domain:github.com)",
+			"WebFetch(domain:*.github.io)",
+			"WebFetch(domain:anthropic.com)",
+			"WebFetch(domain:*.anthropic.com)",
+			"WebFetch(domain:zenn.dev)",
+			"WebFetch(domain:qiita.com)",
+			"mcp__awslabs_aws-documentation-mcp-server__*",
+			"mcp__context7__*",
+			"mcp__iam-policy-autopilot__*",
+			"Bash(cp:*)",
+			"Bash(aws configure list-profiles)",
+			"Bash(aws sts assume-role:*)",
+			"Bash(grep:*)",
+			"Bash(AWS_ACCESS_KEY_ID=:*)",
+			"Bash(AWS_SECRET_ACCESS_KEY=:*)",
+			"Bash(AWS_SESSION_TOKEN=:*)",
+			"Bash(pnpm install:*)",
+			"Bash(pnpm run build:*)",
+			"Bash(pnpm run cdk synth:*)",
+			"Bash(yamllint:*)"
+		],
+		"deny": [
+			"Bash(git add:*)",
+			"Bash(git commit:*)",
+			"Bash(git push:*)",
+			"Bash(git pull:*)",
+			"Bash(git merge:*)",
+			"Bash(git rebase:*)",
+			"Bash(git reset:*)",
+			"Bash(git checkout:*)",
+			"Bash(git switch:*)",
+			"Bash(rm -rf:*)",
+			"Bash(rm /*)",
+			"Bash(sudo:*)",
+			"Bash(pnpm run cdk deploy:*)",
+			"Bash(pnpm exec cdk deploy:*)",
+			"Bash(cdk deploy:*)",
+			"Bash(pnpm run cdk destroy:*)",
+			"Bash(pnpm exec cdk destroy:*)",
+			"Bash(cdk destroy:*)"
+		]
+	},
+	"enabledMcpjsonServers": [
+		"awslabs.aws-documentation-mcp-server",
+		"context7",
+		"iam-policy-autopilot"
+	],
+	"enableAllProjectMcpServers": true,
+	"disabledMcpjsonServers": [],
+	"hooks": {
+		"Notification": [
+			{
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "afplay /System/Library/Sounds/Funk.aiff"
+					}
+				]
+			}
+		],
+		"Stop": [
+			{
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "afplay /System/Library/Sounds/Funk.aiff"
+					}
+				]
+			}
+		],
+		"SubagentStop": [
+			{
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "prompt",
+						"prompt": "Review the subagent output. Verify: 1) Task completion 2) Code quality 3) CLAUDE.md compliance. If issues exist, provide specific feedback."
+					}
+				]
+			}
+		],
+		"PostToolUse": [
+			{
+				"matcher": "Write|Edit|MultiEdit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": ".claude/hooks/format-all.sh",
+						"timeout": 30
+					}
+				]
+			}
+		]
+	}
+}
