@@ -10,20 +10,97 @@ allowed-tools:
   - Glob
 ---
 
-# Python Lambda実装サンプル
+# Python Lambda実装
 
-DuckDB + Iceberg操作の実装例を提供
+## Quick start
 
-## 実装パターン
+基本的なLambda handler:
 
-DuckDB + Iceberg操作のPython Lambda実装パターンを提供
+```python
+import json
+from typing import Any
 
-- Lambda handler実装
-- DuckDB初期化と設定
-- boto3を使用したAWS認証
-- Glue Catalog接続
-- エラーハンドリング
+def lambda_handler(event: dict[str, Any], _context: Any) -> dict[str, Any]:
+    """Lambda handler"""
+    try:
+        # メイン処理
+        result = process(event)
+
+        return {
+            "statusCode": 200,
+            "body": json.dumps({"result": result})
+        }
+    except Exception as e:
+        print(f"Lambda failed: {str(e)}")
+        raise
+```
+
+## Lambda implementation workflow
+
+Copy this checklist and track your progress:
+
+```text
+Task Progress:
+- [ ] Step 1: Create handler structure
+- [ ] Step 2: Add type hints to all functions
+- [ ] Step 3: Initialize boto3 clients at global scope
+- [ ] Step 4: Implement error handling with try-except-raise
+- [ ] Step 5: Add logging statements
+- [ ] Step 6: Validate against coding conventions
+```
+
+### Step 1: Create handler structure
+
+Use the Quick start template above as the foundation.
+
+### Step 2: Add type hints
+
+All functions must have type hints. Required imports:
+
+```python
+from typing import Any, Dict, List, Optional
+```
+
+### Step 3: Initialize boto3 clients
+
+Move client initialization to global scope for Lambda warm start optimization:
+
+```python
+# Good - グローバルスコープ
+s3_client = boto3.client('s3')
+
+def lambda_handler(event, context):
+    s3_client.get_object(...)
+```
+
+See [coding-conventions.md](coding-conventions.md) for details.
+
+### Step 4: Implement error handling
+
+Always use try-except with re-raise pattern:
+
+```python
+try:
+    # main logic
+except Exception as e:
+    print(f"Lambda failed: {str(e)}")
+    raise  # Must re-raise for CloudWatch Logs
+```
+
+### Step 5: Add logging
+
+Use print statements with clear formatting:
+
+```python
+print("Lambda started")
+print(f"Processing: {item_count:,} items")
+print("Lambda completed")
+```
+
+### Step 6: Validate
+
+Cross-reference with [coding-conventions.md](coding-conventions.md) to ensure compliance.
 
 ## 詳細ガイド
 
-[coding-conventions.md](coding-conventions.md) - コーディング規約
+[coding-conventions.md](coding-conventions.md) - コーディング規約、実装例
