@@ -34,42 +34,183 @@ AWS CDK (TypeScript) + Python Lambdaプロジェクト。Claude Codeベストプ
 
 ## 前提条件
 
-- Node.js 18+
-- Python 3.13+
-- AWS CLI設定済み
-- pnpm
+このリポジトリを使用するには、以下のツールが必要です。
 
-## サンプルプロジェクト
+### 必須ツール
 
-### sample_duckdb_iceberg_lambda_py
+- Node.js 18+ (pnpm、CDK用)
+- Python 3.13+ (Lambda開発用)
+- pnpm (パッケージマネージャー)
+- AWS CLI (AWS操作用)
+- AWS CDK CLI (インフラコード管理用)
+- Claude Code CLI (AIアシスタント)
+- Git (バージョン管理)
 
-Lambda + DuckDB + Iceberg統合。S3上のIcebergテーブルをクエリします。
+### インストール手順
 
-詳細: [sample_duckdb_iceberg_lambda_py/README.md](sample_duckdb_iceberg_lambda_py/README.md)
+#### macOS
 
-## セットアップ
-
-### CDK
+Homebrewを使用してインストールします。
 
 ```bash
-cd sample_duckdb_iceberg_lambda_py/cdk  # または sample_sfn_athena/cdk
-pnpm install
+# Homebrew (未インストールの場合)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Node.js
+brew install node@18
+
+# Python 3.13
+brew install python@3.13
+
+# pnpm (Homebrewまたはcurlでインストール)
+brew install pnpm
+# または
+# curl -fsSL https://get.pnpm.io/install.sh | sh -
+
+# AWS CLI
+brew install awscli
+
+# AWS CDK CLI
+pnpm add -g aws-cdk
+
+# Claude Code CLI
+brew install claude-code
+
+# Git (通常はプリインストール済み)
+brew install git
+```
+
+#### Windows
+
+各ツールの公式インストーラーを使用します。
+
+```powershell
+# Node.js
+# https://nodejs.org/en/download からインストーラーをダウンロード
+
+# Python 3.13
+# https://www.python.org/downloads からインストーラーをダウンロード
+
+# pnpm (PowerShellで実行)
+iwr https://get.pnpm.io/install.ps1 -useb | iex
+# または Scoopを使用
+# scoop install nodejs
+# scoop install pnpm
+
+# AWS CLI
+# https://aws.amazon.com/cli からインストーラーをダウンロード
+
+# AWS CDK CLI
+pnpm add -g aws-cdk
+
+# Claude Code CLI
+# https://claude.com/download からインストーラーをダウンロード
+
+# Git
+# https://git-scm.com/download/win からインストーラーをダウンロード
+```
+
+### AWS CLI設定
+
+AWS CLIの認証情報とMFA設定を行います。
+
+```bash
+# AWS認証情報の設定
+aws configure --profile <profile-name>
+# AWS Access Key ID: (入力)
+# AWS Secret Access Key: (入力)
+# Default region name: ap-northeast-1
+# Default output format: json
+
+# MFA設定 (~/.aws/config に追記)
+# [profile <profile-name>]
+# region = ap-northeast-1
+# role_arn = arn:aws:iam::<account-id>:role/<role-name>
+# source_profile = <source-profile>
+# mfa_serial = arn:aws:iam::<account-id>:mfa/<user-name>
+```
+
+### リポジトリのクローン
+
+```bash
+git clone https://github.com/yourusername/claude-code-sample.git
+cd claude-code-sample
+```
+
+### Claude Code CLIの起動
+
+```bash
+# リポジトリルートで起動
+claude-code
+```
+
+## 新規プロジェクト作成手順
+
+このリポジトリで新しいAWS CDKプロジェクトを作成する手順です。Claude Code CLIにプロンプトで依頼することで、Plan Modeから自動的にプロジェクトを構築します。
+
+### 1. Claude Code CLIの起動
+
+```bash
+# リポジトリルートで起動
+claude-code
+```
+
+### 2. プロンプトで新規プロジェクト作成を依頼
+
+Shift + TabでPlan Modeに入った状態で、Claude Codeに以下のようにプロンプトで依頼します。
+
+```text
+sample_sfn_athena という新規プロジェクトを作成してください。
+
+要件
+- AWS CDK (TypeScript) でインフラ構築
+- Step Functions ステートマシンでAthena SQLクエリを実行
+- S3にクエリ結果を保存
+- EventBridgeで定期実行
+
+以下の構造で作成してください
+- sample_sfn_athena/cdk: CDKプロジェクト (TypeScript)
+- sample_sfn_athena/sql: Athena SQLファイル
+- sample_sfn_athena/docs: 設計書とアーキテクチャ図
+```
+
+### 3. 自動実装フロー
+
+Claude Codeが以下を自動実行します。
+
+1. Subagent (design-doc-writer) が設計書を作成
+2. Subagent (implementer) がコードを実装
+   - プロジェクトディレクトリ作成
+   - CDK初期化 (cdk init app --language typescript)
+   - pnpmへの切り替え
+   - 必要なパッケージのインストール
+   - Step Functions ステートマシン定義
+   - Athena SQLクエリファイル作成
+   - S3バケット、Athena Workgroup定義
+   - EventBridgeルール定義
+   - CDK Stack定義
+3. Hooks がフォーマッターを自動実行 (Biome, SQLFluff, Prettier)
+4. Subagent (reviewer) がレビュー実施
+5. Skills (building-aws-cdk, checking-aws-security) を参照して実装パターンを適用
+
+### 4. ビルドとデプロイ
+
+実装完了後、以下のコマンドでビルドとデプロイを実行します。
+
+```bash
+cd sample_sfn_athena/cdk
+
+# TypeScript型チェック
 pnpm run build
-```
 
-### Lambda
+# CloudFormationテンプレート生成
+pnpm run cdk synth
 
-```bash
-cd sample_duckdb_iceberg_lambda_py/resources/lambda
-pip install -r requirements.txt
-```
+# 変更差分確認
+pnpm run cdk diff
 
-## デプロイ
-
-```bash
-cd sample_duckdb_iceberg_lambda_py/cdk  # または sample_sfn_athena/cdk
-pnpm run cdk diff      # 変更確認
-pnpm run cdk deploy    # デプロイ
+# デプロイ (初回は承認が必要)
+pnpm run cdk deploy
 ```
 
 ## Claude Code 5機能の使い分け

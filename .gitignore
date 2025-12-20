@@ -9,6 +9,13 @@ node_modules/
 cdk.out/
 .cdk.staging/
 
+# TypeScript build outputs
+*.js
+*.d.ts
+*.js.map
+!jest.config.js
+!.eslintrc.js
+
 # Python
 __pycache__/
 *.py[cod]
