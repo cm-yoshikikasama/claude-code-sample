@@ -6,7 +6,6 @@
 	},
 	"permissions": {
 		"allow": [
-
 			"Bash(ls:*)",
 			"Bash(cat:*)",
 			"Bash(find ./)",
@@ -49,9 +48,6 @@
 			"WebFetch(domain:*.anthropic.com)",
 			"WebFetch(domain:zenn.dev)",
 			"WebFetch(domain:qiita.com)",
-			"mcp__awslabs_aws-documentation-mcp-server__*",
-			"mcp__context7__*",
-			"mcp__iam-policy-autopilot__*",
 			"Bash(cp:*)",
 			"Bash(aws configure list-profiles)",
 			"Bash(aws sts assume-role:*)",
@@ -62,7 +58,8 @@
 			"Bash(pnpm install:*)",
 			"Bash(pnpm run build:*)",
 			"Bash(pnpm run cdk synth:*)",
-			"Bash(yamllint:*)"
+			"Bash(yamllint:*)",
+			"Bash(pnpm exec tsx:*)"
 		],
 		"deny": [
 			"Bash(git add:*)",
@@ -85,13 +82,6 @@
 			"Bash(cdk destroy:*)"
 		]
 	},
-	"enabledMcpjsonServers": [
-		"awslabs.aws-documentation-mcp-server",
-		"context7",
-		"iam-policy-autopilot"
-	],
-	"enableAllProjectMcpServers": true,
-	"disabledMcpjsonServers": [],
 	"hooks": {
 		"Notification": [
 			{

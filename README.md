@@ -502,4 +502,4 @@ Claude Codeを活用するための参考資料とベストプラクティス集
   - settings.jsonは試行錯誤しやすいように共通管理しない
   - .settings.local.jsonをtemplateとして作成
   - settings.local.jsonを個々で作成してもらう
-  - .mcp.jsonも個々で設定しやすいようにtemplateだけとする
+  - MCP統合はSkills内でハードコード（各Skillが独立してMCPサーバー設定を保持）

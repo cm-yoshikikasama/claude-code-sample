@@ -1,0 +1,17 @@
+{
+  "name": "aws-docs-search",
+  "version": "1.0.0",
+  "description": "AWS Documentation search via MCP with token optimization",
+  "type": "module",
+  "scripts": {
+    "search": "tsx index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
