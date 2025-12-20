@@ -137,6 +137,33 @@ git clone https://github.com/yourusername/claude-code-sample.git
 cd claude-code-sample
 ```
 
+## VS Code拡張機能
+
+プロジェクト開発に推奨される拡張機能です。
+
+### 推奨拡張機能一覧
+
+- ESLint (`dbaeumer.vscode-eslint`)
+- Prettier (`esbenp.prettier-vscode`)
+- Pylance (`ms-python.vscode-pylance`)
+- Python (`ms-python.python`)
+- markdownlint (`davidanson.vscode-markdownlint`)
+- Biome (`biomejs.biome`)
+- Python Debugger (`ms-python.debugpy`)
+- CloudFormation Linter (`kddejong.vscode-cfn-lint`)
+- Rainbow CSV (`mechatroner.rainbow-csv`)
+- Japanese Language Pack (`ms-ceintl.vscode-language-pack-ja`)
+- Markdown Preview Mermaid Support (`bierner.markdown-mermaid`)
+- Python Environment Manager (`donjayamanne.python-environment-manager`)
+- Ruff (`charliermarsh.ruff`)
+- SQLFluff (`dorzey.vscode-sqlfluff`)
+- vscode-icons (`vscode-icons-team.vscode-icons`)
+- YAML (`redhat.vscode-yaml`)
+
+### 自動インストール提案
+
+このリポジトリには `.vscode/extensions.json` が含まれており、VS Codeでプロジェクトを開くと、推奨拡張機能のインストールを自動的に提案します。
+
 ### Claude Code CLIの起動
 
 ```bash
