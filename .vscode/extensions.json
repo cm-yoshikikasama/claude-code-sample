@@ -1,0 +1,20 @@
+{
+	"recommendations": [
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"ms-python.vscode-pylance",
+		"ms-python.python",
+		"davidanson.vscode-markdownlint",
+		"biomejs.biome",
+		"ms-python.debugpy",
+		"kddejong.vscode-cfn-lint",
+		"mechatroner.rainbow-csv",
+		"ms-ceintl.vscode-language-pack-ja",
+		"bierner.markdown-mermaid",
+		"donjayamanne.python-environment-manager",
+		"charliermarsh.ruff",
+		"dorzey.vscode-sqlfluff",
+		"vscode-icons-team.vscode-icons",
+		"redhat.vscode-yaml"
+	]
+}
