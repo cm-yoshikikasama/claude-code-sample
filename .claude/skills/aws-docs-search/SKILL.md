@@ -1,9 +1,6 @@
 ---
 name: aws-docs-search
-description: Search AWS documentation via MCP with token optimization. Returns only top results with summaries instead of full documents, reducing token consumption by 80-90%.
-allowed-tools:
-  - Bash
-  - Read
+description: Search AWS documentation via MCP with token optimization. Returns only top results with summaries instead of full documents, reducing token consumption by 80-90%. Use when (1) implementing AWS services and need API reference documentation, (2) troubleshooting AWS-specific issues, (3) learning about AWS service features and best practices, or (4) verifying parameter names and configuration options.
 ---
 
 # AWS Documentation Search

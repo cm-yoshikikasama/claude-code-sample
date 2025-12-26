@@ -2,7 +2,8 @@
 	"outputStyle": "Explanatory",
 	"env": {
 		"CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-		"BASH_DEFAULT_TIMEOUT_MS": "120000"
+		"BASH_DEFAULT_TIMEOUT_MS": "120000",
+		"CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
 	},
 	"permissions": {
 		"allow": [

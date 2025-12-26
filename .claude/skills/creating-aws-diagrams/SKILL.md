@@ -1,12 +1,6 @@
 ---
 name: creating-aws-diagrams
 description: Creates AWS architecture diagrams using Mermaid flowchart with official AWS icons, clickable nodes, and proper layout. Use when creating or updating AWS infrastructure diagrams, visualizing CDK stacks, or documenting system architecture.
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Grep
-  - Glob
 ---
 
 # AWS構成図作成（Mermaid）

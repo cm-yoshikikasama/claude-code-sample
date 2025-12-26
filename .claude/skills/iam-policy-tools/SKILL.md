@@ -1,9 +1,6 @@
 ---
 name: iam-policy-tools
-description: Generate IAM policies from source code or fix AccessDenied errors via MCP. Returns policy previews instead of full analysis, reducing token consumption by 85-90%.
-allowed-tools:
-  - Bash
-  - Read
+description: Generate IAM policies from source code or fix AccessDenied errors via MCP. Returns policy previews instead of full analysis, reducing token consumption by 85-90%. Use when (1) implementing new Lambda functions or AWS service integrations and need to generate IAM policies, (2) encountering AccessDenied errors and need policy recommendations, or (3) reviewing code to determine required IAM permissions.
 ---
 
 # IAM Policy Tools

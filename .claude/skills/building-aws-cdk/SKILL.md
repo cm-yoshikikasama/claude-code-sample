@@ -1,13 +1,6 @@
 ---
 name: building-aws-cdk
 description: Provides AWS CDK implementation patterns with TypeScript using L2 Constructs for Lambda, IAM, S3, DynamoDB. Applies type-safe patterns, resource naming conventions, security best practices. Use when creating CDK stacks, defining AWS resources, or implementing infrastructure as code with TypeScript.
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Grep
-  - Glob
 ---
 
 # AWS CDK実装

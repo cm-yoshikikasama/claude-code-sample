@@ -1,13 +1,6 @@
 ---
 name: writing-python-lambdas
 description: Provides Python Lambda implementation patterns with type hints, boto3 client initialization optimization, and proper error handling. Use when creating or modifying Python Lambda code, implementing AWS Lambda handlers, or working with boto3 clients.
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Grep
-  - Glob
 ---
 
 # Python Lambda実装

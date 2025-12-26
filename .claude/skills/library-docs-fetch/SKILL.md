@@ -1,9 +1,6 @@
 ---
 name: library-docs-fetch
-description: Fetch library documentation via Context7 MCP with token optimization. Returns preview and metadata instead of full documentation, reducing token consumption by 90-95%.
-allowed-tools:
-  - Bash
-  - Read
+description: Fetch library documentation via Context7 MCP with token optimization. Returns preview and metadata instead of full documentation, reducing token consumption by 90-95%. Use when (1) working with Python/TypeScript libraries like boto3, aws-cdk, or React, (2) need to look up API methods and their signatures, (3) implementing features using unfamiliar library functions, or (4) troubleshooting library-specific errors.
 ---
 
 # Library Documentation Fetcher
