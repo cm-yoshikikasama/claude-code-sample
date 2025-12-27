@@ -24,6 +24,7 @@
 
 1. implementer（実装）
 2. reviewer（レビュー）
+3. unit-tester（ビルド検証・単体テスト）
 
 ### パターン2: 調査+実装
 
@@ -34,6 +35,7 @@
 1. docs-researcher（技術調査、必要に応じて）
 2. implementer（実装）
 3. reviewer（レビュー）
+4. unit-tester（ビルド検証・単体テスト）
 
 ### パターン3: Plan Modeからの実装
 
@@ -44,8 +46,16 @@
 Plan Mode中の必須チェックリスト
 
 - このworkflow.mdを読んで正しいフローを確認する
+- ユーザーにprojectName（リソースprefix）を確認する（例: cm-kasama-projectname）
+- AWS構成図の方式を選択
 - 計画ファイルの最初のステップを「設計書作成」にする
 - 計画ファイルに「workflow.md パターン3に基づく」と明記する
+
+選択基準
+
+- Markdown内に埋め込み、テキストで編集したい → Mermaid
+- GitHubでアイコン表示、画像として出力したい → Diagram MCP
+- 指定がなければデフォルトはMermaid
 
 フロー
 
@@ -53,7 +63,7 @@ Plan Mode中の必須チェックリスト
 2. implementer（実装）
 3. reviewer（レビュー）
 4. 直接Edit（コード修正、必要に応じてドキュメント更新）
-5. tester（テストが必要な場合）
+5. unit-tester（ビルド検証・単体テスト）
 
 実装フェーズでの注意
 
@@ -79,6 +89,46 @@ Plan Mode中の必須チェックリスト
 フロー:
 
 1. reviewer（レビュー）
+
+### パターン5: 結合テスト
+
+ユーザー: 「デプロイ済みの環境で動作確認して」
+
+フロー:
+
+1. integration-tester（テスト項目書作成）
+2. ユーザーがjob実行（Step Functions等）
+3. integration-tester（参照系コマンドで結果取得・エビデンス作成）
+
+前提条件
+
+- CDK スタックがデプロイ済み
+- aws-cli.md の MFA 認証フローに従って認証情報を取得済み
+
+integration-testerの役割
+
+- テスト項目書の作成（`docs/test-evidence.md`）
+- AWS CLIの参照系コマンドで結果を取得
+- Athenaクエリでデータ検証（SELECTのみ）
+- Markdownエビデンスを作成
+
+実行しないこと
+
+- start-execution 等の長時間job実行
+- 理由: timeoutリスクと権限管理のためユーザーに委ねる
+
+出力
+
+- `(プロジェクト)/docs/test-evidence.md` にテスト項目とエビデンスを保存
+
+## エージェントの役割分担
+
+| エージェント | 責務 | ビルド検証 |
+| --- | --- | --- |
+| implementer | 実装コード作成 | なし |
+| reviewer | コードレビュー | なし |
+| unit-tester | 単体テスト作成・実行 | あり（pnpm run build, cdk synth） |
+| integration-tester | テスト項目書作成、参照系コマンドでエビデンス作成、Athenaデータ検証 | なし（デプロイ済み前提、長時間job実行はユーザー） |
 
 ## ファイル連携
 

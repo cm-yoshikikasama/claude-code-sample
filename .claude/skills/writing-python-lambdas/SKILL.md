@@ -5,9 +5,9 @@ description: Provides Python Lambda implementation patterns with type hints, bot
 
 # Python Lambda実装
 
-## Quick start
+PythonでAWS Lambda関数を実装するためのガイドです。
 
-基本的なLambda handler:
+## 基本的なLambda handler
 
 ```python
 import json
@@ -28,35 +28,35 @@ def lambda_handler(event: dict[str, Any], _context: Any) -> dict[str, Any]:
         raise
 ```
 
-## Lambda implementation workflow
+## 実装ワークフロー
 
-Copy this checklist and track your progress:
+以下のチェックリストに従って実装を進める
 
 ```text
-Task Progress:
-- [ ] Step 1: Create handler structure
-- [ ] Step 2: Add type hints to all functions
-- [ ] Step 3: Initialize boto3 clients at global scope
-- [ ] Step 4: Implement error handling with try-except-raise
-- [ ] Step 5: Add logging statements
-- [ ] Step 6: Validate against coding conventions
+進捗:
+- [ ] Step 1: handler構造を作成
+- [ ] Step 2: すべての関数に型ヒントを追加
+- [ ] Step 3: boto3クライアントをグローバルスコープで初期化
+- [ ] Step 4: try-except-raiseでエラーハンドリングを実装
+- [ ] Step 5: ログ出力を追加
+- [ ] Step 6: コーディング規約と照合
 ```
 
-### Step 1: Create handler structure
+### Step 1: handler構造を作成
 
-Use the Quick start template above as the foundation.
+上記の基本テンプレートを基盤として使用。
 
-### Step 2: Add type hints
+### Step 2: 型ヒントを追加
 
-All functions must have type hints. Required imports:
+すべての関数に型ヒントが必須。必要なimport
 
 ```python
 from typing import Any, Dict, List, Optional
 ```
 
-### Step 3: Initialize boto3 clients
+### Step 3: boto3クライアントを初期化
 
-Move client initialization to global scope for Lambda warm start optimization:
+Lambdaウォームスタート最適化のため、クライアント初期化をグローバルスコープに移動
 
 ```python
 # Good - グローバルスコープ
@@ -66,23 +66,23 @@ def lambda_handler(event, context):
     s3_client.get_object(...)
 ```
 
-See [coding-conventions.md](coding-conventions.md) for details.
+詳細は [coding-conventions.md](coding-conventions.md) を参照。
 
-### Step 4: Implement error handling
+### Step 4: エラーハンドリングを実装
 
-Always use try-except with re-raise pattern:
+常にtry-exceptと再raiseパターンを使用
 
 ```python
 try:
-    # main logic
+    # メイン処理
 except Exception as e:
     print(f"Lambda failed: {str(e)}")
-    raise  # Must re-raise for CloudWatch Logs
+    raise  # CloudWatch Logsのために再raise必須
 ```
 
-### Step 5: Add logging
+### Step 5: ログ出力を追加
 
-Use print statements with clear formatting:
+明確なフォーマットでprint文を使用
 
 ```python
 print("Lambda started")
@@ -90,9 +90,9 @@ print(f"Processing: {item_count:,} items")
 print("Lambda completed")
 ```
 
-### Step 6: Validate
+### Step 6: コーディング規約と照合
 
-Cross-reference with [coding-conventions.md](coding-conventions.md) to ensure compliance.
+[coding-conventions.md](coding-conventions.md) と照合してコンプライアンスを確認。
 
 ## 詳細ガイド
 

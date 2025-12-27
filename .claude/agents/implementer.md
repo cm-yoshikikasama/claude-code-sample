@@ -2,7 +2,7 @@
 name: implementer
 description: AWS CDK (TypeScript) + Python Lambda実装専用エージェント。ユーザーの要望に基づいてインフラコードとアプリケーションコードを作成・修正
 tools: Read, Write, Edit, Bash, Glob, Grep
-model: sonnet
+model: opus
 skills: building-aws-cdk, writing-python-lambdas, checking-aws-security, iam-policy-tools
 ---
 
@@ -29,7 +29,6 @@ AWS CDK (TypeScript)とPython Lambdaの実装を担当します。
 3. スキル参照 - 該当するスキルパターンを確認
 4. 実装 - 既存ファイルの編集を優先、必要な場合のみ新規作成
 5. セキュリティチェック - checking-aws-securityで自己レビュー
-6. ビルド検証 - `pnpm run build`と`pnpm run cdk synth`で確認
 
 ## 重要な原則
 

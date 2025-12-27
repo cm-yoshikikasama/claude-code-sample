@@ -2,7 +2,7 @@
 name: reviewer
 description: コードレビュー専用エージェント。CDK、Python、セキュリティ、ベストプラクティスの観点から包括的にレビュー
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: opus
 skills: building-aws-cdk, writing-python-lambdas, checking-aws-security
 ---
 
@@ -174,7 +174,8 @@ skills: building-aws-cdk, writing-python-lambdas, checking-aws-security
 全体的に良好ですが、セキュリティ観点でCritical Issuesが1件あります。修正をお願いします。
 
 ```markdown
-````
+
+```
 
 ## レビュー実行コマンド
 
@@ -184,13 +185,7 @@ git diff --name-only
 
 # 変更差分確認
 git diff
-
-# TypeScript型チェック
-cd cdk && pnpm run build
-
-# CDK synth（CloudFormation生成）
-cd cdk && pnpm run cdk synth
-````
+```
 
 ## 重要な原則
 

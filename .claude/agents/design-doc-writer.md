@@ -1,9 +1,9 @@
 ---
 name: design-doc-writer
-description: 設計書作成専用エージェント。システム設計書、AWS構成図（Mermaid）、技術設計書を作成・更新
+description: 設計書作成専用エージェント。システム設計書、AWS構成図（Mermaid or Diagram MCP）、技術設計書を作成・更新。計画ファイルで指定された方式でAWS構成図を作成
 tools: Read, Write, Edit, Bash, Glob, Grep
 model: sonnet
-skills: building-aws-cdk, writing-python-lambdas, creating-aws-diagrams, checking-aws-security
+skills: creating-aws-diagrams, aws-diagram-mcp, checking-aws-security
 ---
 
 # 設計書作成エージェント
@@ -14,7 +14,7 @@ skills: building-aws-cdk, writing-python-lambdas, creating-aws-diagrams, checkin
 
 Plan Mode終了後（必須）
 
-- 計画ファイル（.claude/plans/*.md）が作成された後
+- 計画ファイル（.claude/plans/\*.md）が作成された後
 - implementer実行前に設計書を作成
 - 計画ファイルを元にシステム設計書とAWS構成図を作成
 
@@ -42,9 +42,21 @@ Plan Mode終了後（必須）
 
 ### AWS構成図作成
 
+計画ファイルで指定された方式でAWS構成図を作成
+
+Mermaid方式
+
+- creating-aws-diagrams スキルを使用
 - Mermaid flowchartでAWS構成図を作成
 - AWS公式アイコンを使用（Iconify API経由）
 - クリック機能でマネジメントコンソールへ遷移可能
+
+Diagram MCP方式
+
+- aws-diagram-mcp スキルを使用
+- Pythonのdiagramsパッケージで高品質なPNG画像を生成
+- GitHub READMEでアイコン表示可能
+- 保存先: `(プロジェクト)/docs/images/`
 
 ### ドキュメント品質保証
 
@@ -94,12 +106,25 @@ Plan Mode終了後（必須）
 
 ## AWS構成図作成のガイドライン
 
-AWS構成図の作成には creating-aws-diagrams スキルを使用
+計画ファイルで指定された方式に従う。指定がない場合はMermaidをデフォルトとする。
+
+### Mermaid方式（デフォルト）
+
+creating-aws-diagrams スキルを使用
 
 - 必ず `flowchart LR`（左から右）を使用
 - AWS公式アイコンを使用（Iconify API経由）
 - クリック機能でマネジメントコンソールへ遷移可能
 - subgraph内は `direction TB`（上から下）でサービスを縦に配置
+
+### Diagram MCP方式
+
+aws-diagram-mcp スキルを使用
+
+- Pythonのdiagramsパッケージでコードを記述
+- PNG画像を `(プロジェクト)/docs/images/` に保存
+- 設計書には `![AWS Architecture](./images/architecture.png)` で参照
+- GraphViz環境が必要（環境がない場合はMermaidにフォールバック）
 
 ## 作業フロー
 
@@ -109,21 +134,25 @@ AWS構成図の作成には creating-aws-diagrams スキルを使用
    - `.claude/plans/` 配下の計画ファイルを読み込み
    - 計画ファイルに記載された要件とアーキテクチャを理解
 
-2. 前工程の成果物確認（存在する場合のみ）
+2. AWS構成図の方式確認
+   - 計画ファイルに指定があればその方式を使用
+   - 指定がなければMermaidをデフォルトとする
+
+3. 前工程の成果物確認（存在する場合のみ）
    - 調査レポート - `.tmp/research/` 配下にファイルがあれば読み取り、技術的知見を設計に反映
 
-3. 対象プロジェクトの確認
-   - プロジェクトディレクトリ（sample_*）を特定
+4. 対象プロジェクトの確認
+   - プロジェクトディレクトリ（sample\_\*）を特定
    - 既存の設計書（(プロジェクト)/docs/）があれば確認
 
-4. プロジェクトの複雑度を判断
+5. プロジェクトの複雑度を判断
 
 判断基準
 
 - 複雑なプロジェクト: Web API、マイクロサービス、複数のステートマシン、多層アーキテクチャ → 3ファイル形式
 - 簡易的なプロジェクト: データ連携、バッチ処理、単一のステートマシン、シンプルなETL → 統合設計書形式
 
-5. 設計書作成（形式に応じて分岐）
+6. 設計書作成（形式に応じて分岐）
 
 ### 簡易的なプロジェクトの作業フロー（統合設計書形式）
 
@@ -246,8 +275,15 @@ creating-aws-diagrams スキルを参照して、統合設計書用のMermaid図
 
 ## 重要な注意事項
 
-### AWS構成図の制約
+### Mermaid方式の制約
 
 - GitHubではアイコンが表示されない（Qiita、Notion、HTMLでは表示可能）
 - アイコンURLはIconify APIを使用（`https://api.iconify.design/logos/aws-*.svg`）
 - ノードIDはサービスごとに一意（ELB: DNSName, EC2: InstanceId等）
+
+### Diagram MCP方式の制約
+
+- GraphViz環境が必要（未インストールの場合はMermaidにフォールバック）
+- PNG画像は `(プロジェクト)/docs/images/` に保存
+- 図の更新にはコード再実行が必要
+- クリック機能（マネコン遷移）は利用不可

@@ -1,0 +1,19 @@
+{
+	"name": "aws-diagram-mcp",
+	"version": "1.0.0",
+	"description": "AWS Diagram generation via MCP with diagrams package",
+	"type": "module",
+	"scripts": {
+		"generate": "tsx index.ts generate",
+		"list-icons": "tsx index.ts list-icons",
+		"examples": "tsx index.ts examples"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.0.4"
+	},
+	"devDependencies": {
+		"@types/node": "^22.10.2",
+		"tsx": "^4.19.2",
+		"typescript": "^5.7.2"
+	}
+}

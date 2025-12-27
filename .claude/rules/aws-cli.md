@@ -21,14 +21,18 @@ MFA認証が必要な環境では、以下の順序で実行する（MFAコー�
 - MFA認証フローで取得した一時認証情報をインライン環境変数として指定してAWS CLIコマンドを実行
 - 例外：profile一覧取得、設定ファイル読み取り、sts assume-roleは直接実行可能
 
+## ユーザー承認
+
+AWS CLIコマンド（インライン環境変数使用）はsettings.jsonのallow listに含まれないため、実行時にユーザー承認が必要。これは意図的な設計であり、本番環境への誤操作を防ぐための安全策。
+
 ## 禁止コマンド
 
 参照専用のため、破壊的操作は絶対に実行してはいけない。
 
 - 禁止される操作：
-   - delete、create、update、put、terminate、modify
-   - rm、cp、mv、sync
-   - attach、detach
+  - delete、create、update、put、terminate、modify
+  - rm、cp、mv、sync
+  - attach、detach
 
 許可されるのは参照系コマンドのみ（list、describe、get、show等）
 

@@ -5,12 +5,14 @@ description: Security checklist for AWS CDK implementations. Verify IAM minimum 
 
 # AWSセキュリティレビュー
 
-## Security review workflow
+AWS CDK実装のセキュリティを検証するためのガイドです。
 
-Copy this checklist and track your progress:
+## セキュリティレビューワークフロー
+
+以下のチェックリストに従ってレビューを進める
 
 ```text
-Security Review Progress:
+進捗:
 - [ ] Step 1: IAM最小権限チェック
 - [ ] Step 2: S3セキュリティチェック
 - [ ] Step 3: Lambdaセキュリティチェック
@@ -21,55 +23,55 @@ Security Review Progress:
 
 ### Step 1: IAM最小権限チェック
 
-Review IAM policies for:
+IAMポリシーで以下を確認
 
-- Resource: "\*" usage (avoid unless necessary like STS)
-- Specific resource ARNs
-- Use of grant methods (grantRead, grantReadWrite)
-- Dedicated IAM role per Lambda function
+- `Resource: "*"` の使用（STSなど必要な場合を除き避ける）
+- 具体的なリソースARNの指定
+- grantメソッドの活用（grantRead、grantReadWrite）
+- Lambda関数ごとに専用IAMロール
 
-See [security-checklist.md](security-checklist.md) for detailed items.
+詳細は [security-checklist.md](security-checklist.md) を参照。
 
 ### Step 2: S3セキュリティチェック
 
-Verify S3 buckets have:
+S3バケットで以下を確認
 
 - encryption: s3.BucketEncryption.S3_MANAGED
 - blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL
-- versioned: true (本番環境推奨)
+- versioned: true（本番環境推奨）
 
 ### Step 3: Lambdaセキュリティチェック
 
-Verify Lambda functions have:
+Lambda関数で以下を確認
 
-- Dedicated IAM role
-- No secrets in environment variables
-- Appropriate timeout settings
-- VPC configuration (if needed)
+- 専用IAMロール
+- 環境変数にシークレットを直接設定していない
+- 適切なタイムアウト設定
+- VPC設定（必要に応じて）
 
 ### Step 4: シークレット管理チェック
 
-Verify:
+以下を確認
 
-- No plain text secrets in environment variables
-- Use of Secrets Manager or Parameter Store
-- Lambda has grantRead permission for secrets
+- 環境変数に平文のシークレットがない
+- Secrets ManagerまたはParameter Storeを使用
+- LambdaがシークレットへのgrantRead権限を持つ
 
 ### Step 5: 問題点の文書化
 
-Document all security issues found with:
+発見したセキュリティ問題を以下の形式で文書化
 
-- Severity (Critical/High/Medium/Low)
-- Location (file path and line number)
-- Specific remediation steps
+- 重要度（Critical/High/Medium/Low）
+- 場所（ファイルパスと行番号）
+- 具体的な修正手順
 
 ### Step 6: 修正確認
 
-After fixes are applied:
+修正後に以下を実行
 
-- Re-run security checks
-- Verify all Critical and High issues resolved
-- Run `pnpm run cdk synth` to validate
+- セキュリティチェックを再実行
+- CriticalとHighの問題がすべて解決されていることを確認
+- `pnpm run cdk synth` で検証
 
 ## 詳細ガイド
 
