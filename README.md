@@ -46,6 +46,12 @@ AWS CDK (TypeScript) + Python Lambdaプロジェクト。Claude Codeベストプ
 - Claude Code CLI (AIアシスタント)
 - Git (バージョン管理)
 
+### オプションツール
+
+- 1Password CLI (MFA自動取得用)
+  - MFA認証コードの自動取得に使用
+  - 未インストールの場合は手動でMFAコードを入力
+
 ### インストール手順
 
 #### macOS
@@ -78,6 +84,9 @@ brew install claude-code
 
 # Git (通常はプリインストール済み)
 brew install git
+
+# 1Password CLI (オプション、MFA自動取得用)
+brew install --cask 1password-cli
 ```
 
 #### Windows
@@ -108,6 +117,10 @@ pnpm add -g aws-cdk
 
 # Git
 # https://git-scm.com/download/win からインストーラーをダウンロード
+
+# 1Password CLI (オプション、MFA自動取得用)
+# https://developer.1password.com/docs/cli/get-started からダウンロード
+# または winget install 1Password.CLI
 ```
 
 ### AWS CLI設定
@@ -129,6 +142,30 @@ aws configure --profile <profile-name>
 # source_profile = <source-profile>
 # mfa_serial = arn:aws:iam::<account-id>:mfa/<user-name>
 ```
+
+### 1PasswordでのMFA管理
+
+本プロジェクトでは、AWS MFA認証コードを1Passwordで管理することを推奨しています。Claude Codeが`op` CLIを使用してMFAコードを自動取得し、`aws sts assume-role`で一時認証情報を取得します。
+
+#### 1Passwordへのワンタイムパスワード登録
+
+1. 1Passwordで「AWS」という名前のアイテムを作成（Vault: Employee）
+2. ワンタイムパスワード（TOTP）フィールドを追加
+3. AWS IAMのMFA設定からシークレットキーを登録
+
+#### 1Password CLI認証
+
+```bash
+# 1Password CLIにサインイン
+eval $(op signin)
+
+# MFAコード取得の確認
+op item get "AWS" --vault Employee --otp
+```
+
+#### 1Password CLIが使えない場合
+
+1Password CLIが未認証またはインストールされていない場合、Claude CodeはAskUserQuestionツールでMFAコードの手動入力を求めます。
 
 ### リポジトリのクローン
 

@@ -15,24 +15,30 @@ AWS操作は必ずMCPスクリプト経由で実行する。AWS CLIの直接実�
 - CloudTrailでの監査ログ
 - エラーハンドリングの統一
 
-## MFA認証フロー（重要）
+## MFA認証フロー
 
-MFA認証が必要な環境では、以下の順序で実行する（MFAコードは30秒で期限切れになるため、最後に取得すること）
+MFA認証が必要な環境では、以下の順序で実行する
 
 1. ユーザーにどのprofileを使用するか選択させる
 2. `~/.aws/config`から対象profileの設定情報を取得（role_arn、source_profile、mfa_serial）
-3. AskUserQuestionツールでユーザーから現在のMFAコード（6桁）を取得
-4. 即座に `aws sts assume-role` で一時認証情報を取得（MFAコード期限切れを防ぐ）
-5. 取得した認証情報をインライン環境変数として設定し、MCPスクリプトを実行
-   - `AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz pnpm exec tsx .claude/skills/aws-mcp-server/index.ts <command> <args>`
+3. 1Password CLIからMFAコードを自動取得
+   - `op item get "AWS" --vault Employee --otp`
+4. `aws sts assume-role`で一時認証情報を取得
+5. 取得した認証情報を環境変数として設定し、MCPスクリプトを実行
+   - `cd .claude/skills/aws-mcp-server && env AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz pnpm exec tsx index.ts <command> <args>`
 6. 一時認証情報は約1時間有効なため、同じセッション内で複数のコマンドを実行可能
+
+### 1Password CLIが使えない場合
+
+1Password CLIが未認証の場合は、AskUserQuestionツールでMFAコードを手動取得する
 
 ## AWS操作コマンド
 
 ```bash
-# プロジェクトルートから実行
-AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
-  pnpm exec tsx .claude/skills/aws-mcp-server/index.ts <command> <args>
+# aws-mcp-serverディレクトリで実行
+cd .claude/skills/aws-mcp-server && \
+  env AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
+  pnpm exec tsx index.ts <command> <args>
 ```
 
 ### 利用可能なコマンド
@@ -46,14 +52,19 @@ AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
 ### 使用例
 
 ```bash
+# aws-mcp-serverディレクトリ内で実行（envと認証情報は省略）
+
 # S3バケット一覧
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api "s3_ListBuckets" '{}'
+pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws s3 ls"}'
 
 # Step Functions実行結果
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api "stepfunctions_DescribeExecution" '{"executionArn":"..."}'
+pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws stepfunctions describe-execution --execution-arn arn:aws:states:..."}'
 
 # CloudWatch Logs
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api "logs_FilterLogEvents" '{"logGroupName":"..."}'
+pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws logs filter-log-events --log-group-name ..."}'
+
+# ドキュメント検索
+pnpm exec tsx index.ts search "Lambda concurrency" 5
 ```
 
 ## 例外（AWS CLI直接実行が許可されるケース）
