@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: コードレビュー専用エージェント。CDK、Python、セキュリティ、ベストプラクティスの観点から包括的にレビュー
+description: Code review agent. Comprehensive review from CDK, Python, security, and best practices perspectives
 tools: Read, Grep, Glob, Bash
 model: opus
 skills: building-aws-cdk, writing-python-lambdas, checking-aws-security

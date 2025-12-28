@@ -21,7 +21,7 @@ AWS CDK (TypeScript) + Pythonプロジェクト。Claude Codeベストプラク�
 プロジェクトの詳細ルールは以下のファイルを参照
 
 - AWS CDK (TypeScript): @.claude/rules/cdk.md
-- AWS CLI: @.claude/rules/aws-cli.md
+- AWS操作: @.claude/rules/aws-operations.md
 - Python Lambda: @.claude/rules/python.md
 - 開発フロー（Subagent活用、ドキュメント更新）: @.claude/rules/workflow.md
 - Markdown編集ルール: @.claude/rules/markdown.md

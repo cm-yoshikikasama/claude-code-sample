@@ -1,6 +1,6 @@
 ---
 name: design-doc-writer
-description: 設計書作成専用エージェント。システム設計書、AWS構成図（Mermaid or Diagram MCP）、技術設計書を作成・更新。計画ファイルで指定された方式でAWS構成図を作成
+description: Design document agent. Create and update system design docs, AWS architecture diagrams (Mermaid or Diagram MCP), and technical specs. Generate AWS diagrams using method specified in plan file
 tools: Read, Write, Edit, Bash, Glob, Grep
 model: sonnet
 skills: creating-aws-diagrams, aws-diagram-mcp, checking-aws-security

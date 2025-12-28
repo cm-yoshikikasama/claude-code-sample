@@ -1,6 +1,6 @@
 ---
 name: unit-tester
-description: 単体テスト専用エージェント。ビルド検証、pytest/Jest単体テストを作成し実行。AWS環境には接続しない
+description: Unit test agent. Build verification, create and run pytest/Jest unit tests. Does not connect to AWS environments
 tools: Read, Write, Edit, Bash, Glob, Grep
 model: sonnet
 skills: building-aws-cdk, writing-python-lambdas

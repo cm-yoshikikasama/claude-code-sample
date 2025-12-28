@@ -103,12 +103,12 @@ Plan Mode中の必須チェックリスト
 前提条件
 
 - CDK スタックがデプロイ済み
-- aws-cli.md の MFA 認証フローに従って認証情報を取得済み
+- aws-operations.md の MFA 認証フローに従って認証情報を取得済み
 
 integration-testerの役割
 
 - テスト項目書の作成（`docs/test-evidence.md`）
-- AWS CLIの参照系コマンドで結果を取得
+- AWS MCP Serverの参照系ツールで結果を取得
 - Athenaクエリでデータ検証（SELECTのみ）
 - Markdownエビデンスを作成
 

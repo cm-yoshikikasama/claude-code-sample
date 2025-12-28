@@ -304,7 +304,7 @@ Claudeが自動的に発見・使用する実装パターン集です。
 .claude/rules/
 ├── cdk.md        (paths: "**/cdk/**/*.ts")  - CDK TypeScript編集時のみ
 ├── python.md     (paths: "**/*.py")         - Python編集時のみ
-├── aws-cli.md    (paths なし)               - 常時ロード
+├── aws-operations.md (paths なし)           - 常時ロード
 ├── workflow.md   (paths なし)               - 常時ロード
 └── markdown.md   (paths なし)               - 常時ロード
 ```
@@ -312,7 +312,7 @@ Claudeが自動的に発見・使用する実装パターン集です。
 動作例（CDK TypeScript編集時）
 
 - cdk.md: any型禁止、pnpm使用、ハードコード禁止
-- aws-cli.md: MFA認証フロー、profile明示指定
+- aws-operations.md: MFA認証フロー、MCP経由でのAWS操作
 - workflow.md: Subagent選択基準
 
 #### Skills（4個）
@@ -477,6 +477,77 @@ Claude Codeを活用するための参考資料とベストプラクティス集
 - [MCP ツールのコンテキスト圧迫の問題とその解決策](https://azukiazusa.dev/blog/mcp-tool-context-overflow/)
 - [MCP によるコード実行: より効率的なエージェントの構築](https://www.anthropic.com/engineering/code-execution-with-mcp)
   - ほとんどのMCPではツール定義を事前に読み込みコンテキストを消費する
+
+### AWS MCP Server（Preview）
+
+AWSが提供するリモートMCPサーバー。IAM認証でAWSリソースへアクセス可能。
+
+- [AWS MCP Servers](https://awslabs.github.io/mcp/)
+- [AWS MCP Serverをプレビューとして公開しました](https://dev.classmethod.jp/articles/aws-mcp-server-preview/)
+
+#### 特徴
+
+| 項目       | 内容                                |
+| ---------- | ----------------------------------- |
+| 認証       | IAM認証（SigV4署名）                |
+| 監査       | CloudTrailで全MCP呼び出しをログ記録 |
+| リージョン | 現在 us-east-1 のみ                 |
+| ステータス | Preview版（仕様変更の可能性あり）   |
+
+#### 利用可能なMCPツール
+
+- `aws___search_documentation` - AWSドキュメント検索
+- `aws___read_documentation` - ドキュメント読み取り
+- `aws___call_aws` - AWS API呼び出し
+- `aws___recommend` - AWS推奨事項取得
+- `aws___list_regions` - リージョン一覧
+- `aws___get_regional_availability` - リージョン別サービス可用性
+
+#### MCP専用IAMアクション（将来的な多層防御）
+
+AWS MCP Server専用のIAMアクションでAI経由のアクセスのみを制御可能。
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["aws-mcp:InvokeMcp", "aws-mcp:CallReadOnlyTool"],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": ["aws-mcp:CallReadWriteTool"],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+ただし現時点ではPreview版のため、コードレベルでのブロック（`.claude/skills/aws-mcp-server`）で十分。IAMポリシーはGA後に検討。
+
+#### 本プロジェクトでの実装パターン
+
+MCPを直接呼び出すとレスポンス全体がコンテキストに入りトークンを消費するため、スクリプト経由でプレビュー形式に圧縮して返却。
+
+```text
+.claude/skills/aws-mcp-server/
+├── SKILL.md          # スキル定義
+├── index.ts          # CLI（search, api, tools コマンド）
+├── mcp-client.ts     # MCPクライアント（mcp-proxy-for-aws経由）
+└── package.json
+```
+
+使用例
+
+```bash
+# AWS認証情報をインライン環境変数で指定
+AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
+  pnpm exec tsx .claude/skills/aws-mcp-server/index.ts search "Lambda concurrency" 5
+```
+
+破壊的操作（create, delete, update等）はコード内でブロック済み。
 
 ## Custom Slash Commands
 

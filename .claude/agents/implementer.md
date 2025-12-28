@@ -1,6 +1,6 @@
 ---
 name: implementer
-description: AWS CDK (TypeScript) + Python Lambda実装専用エージェント。ユーザーの要望に基づいてインフラコードとアプリケーションコードを作成・修正
+description: AWS CDK (TypeScript) + Python Lambda implementation agent. Create and modify infrastructure and application code based on user requirements
 tools: Read, Write, Edit, Bash, Glob, Grep
 model: opus
 skills: building-aws-cdk, writing-python-lambdas, checking-aws-security, iam-policy-tools
