@@ -13,8 +13,7 @@ function validateAwsCredentials(): void {
 
 	if (missing.length > 0) {
 		throw new Error(
-			`Missing AWS credentials: ${missing.join(", ")}. ` +
-				"Please use MFA authentication flow from aws-operations.md",
+			`Missing AWS credentials: ${missing.join(", ")}. Please use MFA authentication flow from aws-operations.md`,
 		);
 	}
 }
@@ -33,13 +32,13 @@ export async function getClient(): Promise<Client> {
 			"mcp-proxy-for-aws@v1.1.5",
 			"https://aws-mcp.us-east-1.api.aws/mcp",
 			"--metadata",
-			"AWS_REGION=us-west-2",
+			"AWS_REGION=us-east-1",
 		],
 		env: {
 			...process.env,
-			AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID!,
-			AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY!,
-			AWS_SESSION_TOKEN: process.env.AWS_SESSION_TOKEN!,
+			AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID ?? "",
+			AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY ?? "",
+			AWS_SESSION_TOKEN: process.env.AWS_SESSION_TOKEN ?? "",
 		},
 	});
 

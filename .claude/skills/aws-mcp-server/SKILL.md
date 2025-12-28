@@ -32,7 +32,7 @@ AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
 
 ```bash
 AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
-  pnpm exec tsx index.ts api "s3_ListBuckets" '{}'
+  pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws s3 ls"}'
 ```
 
 Arguments
@@ -63,9 +63,9 @@ Arguments
 
 ```json
 {
-  "tool": "s3_ListBuckets",
+  "tool": "aws___call_aws",
   "success": true,
-  "preview": "{ \"Buckets\": [ { \"Name\": \"my-bucket\"..."
+  "preview": "2024-01-15 10:30:00 my-bucket\n2024-02-20 14:45:00 another-bucket..."
 }
 ```
 
