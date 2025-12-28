@@ -515,6 +515,15 @@ Claude Codeを活用するための参考資料とベストプラクティス集
 - [MCP によるコード実行: より効率的なエージェントの構築](https://www.anthropic.com/engineering/code-execution-with-mcp)
   - ほとんどのMCPではツール定義を事前に読み込みコンテキストを消費する
 
+### MCPをコードから呼び出す（トークン削減手法）
+
+MCPツールをClaude Codeが直接呼び出すと、レスポンス全体がコンテキストに入りトークンを大量消費します。Skill内のコードからMCPを呼び出し、レスポンスをプレビュー形式に圧縮することで80-90%のトークン削減が可能です。
+
+- [Claude CodeのSkills+MCPでトークン削減](https://dev.classmethod.jp/articles/claude-code-skills-mcp-token-reduction/)
+- 実装例: `.claude/skills/aws-mcp-server/`（本リポジトリ）
+  - `mcp-client.ts`: `@modelcontextprotocol/sdk`でMCPサーバーに接続
+  - `index.ts`: レスポンスを500文字にプレビュー圧縮して返却
+
 ### AWS MCP Server（Preview）
 
 AWSが提供するリモートMCPサーバー。IAM認証でAWSリソースへアクセス可能。
