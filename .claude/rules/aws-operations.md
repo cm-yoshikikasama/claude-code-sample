@@ -5,15 +5,8 @@ AWS操作は必ずMCPスクリプト経由で実行する。AWS CLIの直接実�
 ## 基本原則
 
 - AWS CLIを直接実行してはいけない
-- `.claude/skills/aws-mcp-server` スクリプト経由でAWS操作を行う
+- `.claude/skills/aws-mcp-server` skill経由でAWS操作を行う
 - 破壊的操作はスクリプト内でブロック済み
-
-## MCP経由にする理由
-
-- トークン効率化（結果を500文字にプレビュー圧縮）
-- 破壊的操作のブロックをコードで強制
-- CloudTrailでの監査ログ
-- エラーハンドリングの統一
 
 ## MFA認証フロー
 
@@ -77,7 +70,7 @@ pnpm exec tsx index.ts search "Lambda concurrency" 5
 
 ## 禁止される操作
 
-MCPスクリプト内でブロック済みだが、以下は絶対に実行してはいけない
+aws-mcp-server skill内でブロック済みだが、以下は絶対に実行してはいけない
 
 - create, delete, update, put, terminate, modify, remove
 - start, stop, reboot

@@ -1,35 +1,28 @@
 ---
 name: aws-integration-testing
-description: Create integration test documents and evidence using AWS MCP Server. Retrieve results with read-only MCP tools and generate Markdown evidence. Job execution is performed by the user.
+description: Create integration test documents and evidence using aws-mcp-server script. Retrieve results with read-only commands and generate Markdown evidence. Job execution is performed by the user.
 ---
 
-# AWS結合テスト（MCP版）
+# AWS結合テスト
 
-テスト項目書を作成し、AWS MCP Serverの参照系ツールで結果を取得してMarkdownエビデンスを作成します。
+テスト項目書を作成し、aws-mcp-server skillで結果を取得してMarkdownエビデンスを作成します。
 
 ## 前提条件
 
 - CDKスタックがデプロイ済みであること
-- @.claude/rules/aws-operations.md の MFA認証フロー完了済みであること
-- 環境変数にAWS認証情報が設定済みであること
+- MFA認証で一時認証情報を取得済みであること
+- IAMロールに必要な権限が付与されていること
 
-## AWS MCP Server利用方法
+## AWS操作方法
 
-AWS CLIの代わりに `.claude/skills/aws-mcp-server` スクリプトを使用します。
+aws-operations.md に従い、aws-mcp-server skill経由でAWS操作を行う
 
-MCPを直接呼び出さずスクリプト経由にする理由
-
-- トークン効率化（結果を500文字にプレビュー圧縮、90%以上削減）
-- 破壊的操作のブロックをコードで強制
-- エラーハンドリングの統一
-
-### 基本コマンド
+### スクリプト実行例
 
 ```bash
-# プロジェクトルートから実行
-# AWS認証情報をインライン環境変数で指定
-AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
-  pnpm exec tsx .claude/skills/aws-mcp-server/index.ts <command> <args>
+cd .claude/skills/aws-mcp-server && \
+  env AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
+  pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws s3 ls"}'
 ```
 
 ### 利用可能なコマンド
@@ -40,20 +33,21 @@ AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
 | `search <query> [limit]`      | AWSドキュメント検索           |
 | `api <tool_name> <args_json>` | AWS API呼び出し（参照系のみ） |
 
-## 許可されるMCPツール（参照系のみ）
+## 許可されるコマンド（参照系のみ）
 
-- `s3_ListBuckets`, `s3_ListObjectsV2`, `s3_GetObject`
-- `dynamodb_Query`, `dynamodb_Scan`, `dynamodb_DescribeTable`
-- `stepfunctions_DescribeExecution`, `stepfunctions_ListExecutions`
-- `stepfunctions_DescribeStateMachine`, `stepfunctions_GetExecutionHistory`
-- `cloudwatch_GetMetricData`, `cloudwatch_DescribeAlarms`
-- `logs_FilterLogEvents`, `logs_DescribeLogGroups`
-- `athena_GetQueryExecution`, `athena_GetQueryResults`
-- `glue_GetDatabase`, `glue_GetTable`, `glue_GetJobRun`
+aws-mcp-server skillで使用可能なコマンド
 
-## 禁止されるMCPツール
+- S3: `aws s3 ls`, `aws s3api list-objects-v2`, `aws s3api get-object`
+- DynamoDB: `aws dynamodb query`, `aws dynamodb scan`, `aws dynamodb describe-table`
+- Step Functions: `aws stepfunctions describe-execution`, `aws stepfunctions list-executions`
+- CloudWatch: `aws cloudwatch get-metric-data`, `aws cloudwatch describe-alarms`
+- Logs: `aws logs filter-log-events`, `aws logs describe-log-groups`
+- Athena: `aws athena get-query-execution`, `aws athena get-query-results`
+- Glue: `aws glue get-database`, `aws glue get-table`, `aws glue get-job-run`
 
-aws-mcp-serverスクリプト内でブロック済み（コードレベルで強制）
+## 禁止されるコマンド
+
+スクリプト内でブロック済み
 
 - create, delete, update, put, terminate, modify, remove, start, stop, reboot
 
@@ -61,9 +55,9 @@ aws-mcp-serverスクリプト内でブロック済み（コードレベルで強
 
 以下は使用禁止（ユーザーが手動実行）
 
-- `stepfunctions_StartExecution`
-- `glue_StartJobRun`
-- `events_PutEvents`
+- `aws stepfunctions start-execution`
+- `aws glue start-job-run`
+- `aws events put-events`
 
 理由
 
@@ -81,7 +75,7 @@ aws-mcp-serverスクリプト内でブロック済み（コードレベルで強
 - 正常系テストケース
   - 入力データ
   - 期待結果
-  - 確認方法（使用するMCPツール）
+  - 確認方法（使用するコマンド）
 - 異常系テストケース
   - 異常条件
   - 期待されるエラー
@@ -92,80 +86,57 @@ aws-mcp-serverスクリプト内でブロック済み（コードレベルで強
 
 ## エビデンス取得コマンド例
 
+aws-mcp-server skillで以下を実行（cd と環境変数は省略）
+
 ### Step Functions 実行結果
 
 ```bash
 # 実行結果取得（実行はユーザーが行った後）
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "stepfunctions_DescribeExecution" \
-  '{"executionArn":"arn:aws:states:ap-northeast-1:123456789012:execution:MyStateMachine:exec-id"}'
+pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws stepfunctions describe-execution --execution-arn arn:aws:states:ap-northeast-1:123456789012:execution:MyStateMachine:exec-id"}'
 
 # 実行履歴一覧
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "stepfunctions_ListExecutions" \
-  '{"stateMachineArn":"arn:aws:states:ap-northeast-1:123456789012:stateMachine:MyStateMachine","statusFilter":"SUCCEEDED"}'
-
-# 実行履歴詳細
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "stepfunctions_GetExecutionHistory" \
-  '{"executionArn":"arn:aws:states:..."}'
+pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws stepfunctions list-executions --state-machine-arn arn:aws:states:ap-northeast-1:123456789012:stateMachine:MyStateMachine --status-filter SUCCEEDED"}'
 ```
 
 ### S3 データ確認
 
 ```bash
 # バケット一覧
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "s3_ListBuckets" '{}'
+pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws s3 ls"}'
 
 # オブジェクト一覧
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "s3_ListObjectsV2" '{"Bucket":"bucket-name","Prefix":"path/"}'
-
-# オブジェクト取得（小さいファイルのみ）
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "s3_GetObject" '{"Bucket":"bucket-name","Key":"path/to/file.json"}'
+pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws s3api list-objects-v2 --bucket bucket-name --prefix path/"}'
 ```
 
 ### CloudWatch Logs
 
 ```bash
 # ログイベント取得
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "logs_FilterLogEvents" \
-  '{"logGroupName":"/aws/lambda/function-name","filterPattern":"ERROR"}'
-
-# ロググループ一覧
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "logs_DescribeLogGroups" '{"logGroupNamePrefix":"/aws/stepfunctions/"}'
+pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws logs filter-log-events --log-group-name /aws/lambda/function-name --filter-pattern ERROR"}'
 ```
 
 ### Glue
 
 ```bash
 # データベース情報
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "glue_GetDatabase" '{"Name":"my_database"}'
+pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws glue get-database --name my_database"}'
 
 # テーブル情報
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "glue_GetTable" '{"DatabaseName":"my_database","Name":"my_table"}'
-
-# ジョブ実行結果（実行はユーザーが行った後）
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "glue_GetJobRun" '{"JobName":"my-job","RunId":"jr_xxx"}'
+pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws glue get-table --database-name my_database --name my_table"}'
 ```
 
 ### DynamoDB
 
 ```bash
 # テーブル情報
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "dynamodb_DescribeTable" '{"TableName":"my-table"}'
+pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws dynamodb describe-table --table-name my-table"}'
+```
 
-# クエリ実行
-pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
-  "dynamodb_Query" '{"TableName":"my-table","KeyConditionExpression":"pk = :pk","ExpressionAttributeValues":{":pk":{"S":"value"}}}'
+### ドキュメント検索
+
+```bash
+# AWSドキュメント検索
+pnpm exec tsx index.ts search "Lambda concurrency" 5
 ```
 
 ## テストフロー
@@ -174,7 +145,7 @@ pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
 
 1. テスト項目書を作成
 2. ユーザーがState Machineを正常入力で実行
-3. `stepfunctions_DescribeExecution`でSUCCEEDEDステータスを確認
+3. スクリプトでSUCCEEDEDステータスを確認
 4. 出力データを検証
 5. エビデンスを作成
 
@@ -182,31 +153,19 @@ pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api \
 
 1. テスト項目書を作成
 2. ユーザーが不正な入力でState Machineを実行
-3. `stepfunctions_DescribeExecution`でFAILEDステータスを確認
+3. スクリプトでFAILEDステータスを確認
 4. エラーメッセージを検証
 5. エビデンスを作成
 
 ### データ検証テスト
 
 1. テスト項目書を作成
-2. `s3_ListObjectsV2`で出力ファイルの存在確認
-3. `glue_GetTable`でテーブルスキーマを確認
-4. `dynamodb_Query`で期待するレコードを確認
+2. S3オブジェクト一覧で出力ファイルの存在確認
+3. Glueテーブル情報でスキーマを確認
+4. DynamoDBクエリで期待するレコードを確認
 5. エビデンスを作成
-
-## AWS CLIとの対応表
-
-| AWS CLI | MCP Tool |
-| --- | --- |
-| `aws s3 ls` | `s3_ListBuckets`, `s3_ListObjectsV2` |
-| `aws stepfunctions describe-execution` | `stepfunctions_DescribeExecution` |
-| `aws stepfunctions list-executions` | `stepfunctions_ListExecutions` |
-| `aws logs filter-log-events` | `logs_FilterLogEvents` |
-| `aws glue get-database` | `glue_GetDatabase` |
-| `aws glue get-table` | `glue_GetTable` |
-| `aws dynamodb query` | `dynamodb_Query` |
 
 ## 参考
 
-- AWS MCP Server詳細: README.md の「AWS MCP Server（Preview）」セクション
-- MFA認証フロー: @.claude/rules/aws-operations.md
+- AWS操作詳細: .claude/rules/aws-operations.md
+- スクリプト詳細: .claude/skills/aws-mcp-server/SKILL.md

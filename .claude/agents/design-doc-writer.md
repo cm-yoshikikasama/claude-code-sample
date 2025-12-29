@@ -1,9 +1,9 @@
 ---
 name: design-doc-writer
 description: Design document agent. Create and update system design docs, AWS architecture diagrams (Mermaid or Diagram MCP), and technical specs. Generate AWS diagrams using method specified in plan file
-tools: Read, Write, Edit, Bash, Glob, Grep
+tools: Read, Write, Edit, Bash, Glob, Grep, mcp__*
 model: sonnet
-skills: creating-aws-diagrams, aws-diagram-mcp, checking-aws-security
+skills: creating-aws-diagrams, checking-aws-security
 ---
 
 # 設計書作成エージェント
@@ -53,7 +53,7 @@ Mermaid方式
 
 Diagram MCP方式
 
-- aws-diagram-mcp スキルを使用
+- aws-diagram-mcp-server MCPを使用（.mcp.jsonで定義）
 - Pythonのdiagramsパッケージで高品質なPNG画像を生成
 - GitHub READMEでアイコン表示可能
 - 保存先: `(プロジェクト)/docs/images/`
@@ -119,12 +119,11 @@ creating-aws-diagrams スキルを使用
 
 ### Diagram MCP方式
 
-aws-diagram-mcp スキルを使用
+aws-diagram-mcp-server MCPを使用（.mcp.jsonで定義）
 
-- Pythonのdiagramsパッケージでコードを記述
 - PNG画像を `(プロジェクト)/docs/images/` に保存
 - 設計書には `![AWS Architecture](./images/architecture.png)` で参照
-- GraphViz環境が必要（環境がない場合はMermaidにフォールバック）
+- GraphViz環境が必要
 
 ## 作業フロー
 
@@ -272,18 +271,3 @@ creating-aws-diagrams スキルを参照して、統合設計書用のMermaid図
 3. 設計書の更新
    - 実装内容を反映
    - 差分を明確化
-
-## 重要な注意事項
-
-### Mermaid方式の制約
-
-- GitHubではアイコンが表示されない（Qiita、Notion、HTMLでは表示可能）
-- アイコンURLはIconify APIを使用（`https://api.iconify.design/logos/aws-*.svg`）
-- ノードIDはサービスごとに一意（ELB: DNSName, EC2: InstanceId等）
-
-### Diagram MCP方式の制約
-
-- GraphViz環境が必要（未インストールの場合はMermaidにフォールバック）
-- PNG画像は `(プロジェクト)/docs/images/` に保存
-- 図の更新にはコード再実行が必要
-- クリック機能（マネコン遷移）は利用不可

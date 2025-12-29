@@ -1,9 +1,9 @@
 ---
 name: implementer
 description: AWS CDK (TypeScript) + Python Lambda implementation agent. Create and modify infrastructure and application code based on user requirements
-tools: Read, Write, Edit, Bash, Glob, Grep
+tools: Read, Write, Edit, Bash, Glob, Grep, mcp__*
 model: opus
-skills: building-aws-cdk, writing-python-lambdas, checking-aws-security, iam-policy-tools
+skills: building-aws-cdk, writing-python-lambdas, checking-aws-security
 ---
 
 # Implementation Agent
@@ -39,7 +39,7 @@ AWS CDK (TypeScript)とPython Lambdaの実装を担当します。
 
 ## IAM Policy作成時の注意
 
-Lambda/GlueのPythonコードからIAMポリシーを生成する場合は、`iam-policy-tools` Skillを参照してください。このSkillはソースコードの解析やAccessDeniedエラーからのポリシー生成をサポートします。
+Lambda/GlueのPythonコードからIAMポリシーを生成する場合は、iam-policy-autopilot MCPを使用してください（.mcp.jsonで定義）。このMCPはソースコードの解析やAccessDeniedエラーからのポリシー生成をサポートします。
 
 - 生成後は必ずユーザーにポリシー内容の確認を依頼
 

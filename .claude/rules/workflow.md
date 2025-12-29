@@ -108,7 +108,7 @@ Plan Mode中の必須チェックリスト
 integration-testerの役割
 
 - テスト項目書の作成（`docs/test-evidence.md`）
-- AWS MCP Serverの参照系ツールで結果を取得
+- aws-mcp-server skillで結果を取得
 - Athenaクエリでデータ検証（SELECTのみ）
 - Markdownエビデンスを作成
 
@@ -144,7 +144,3 @@ integration-testerの役割
 
 - `.tmp/research/`: 調査中の一時保存場所
 - 調査結果は必要に応じて設計書 (`(プロジェクト)/docs/`) に反映
-
-## Plan Mode
-
-大規模な新機能開発で使用。計画ファイル（.claude/plans/\*.md）作成後、実装フェーズへ移行。

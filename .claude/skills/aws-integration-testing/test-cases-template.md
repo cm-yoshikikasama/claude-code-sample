@@ -1,6 +1,6 @@
 # 結合テストテンプレート
 
-ユーザーがjob実行（Step Functions、Glue、Lambda、EventBridge等）した後、AWS MCP Serverの参照系ツールで結果を取得してエビデンスを記録する。
+ユーザーがjob実行（Step Functions、Glue、Lambda、EventBridge等）した後、aws-mcp-server skillで結果を取得してエビデンスを記録する。
 
 このテンプレートをコピーして `(プロジェクト)/docs/test-evidence.md` に保存
 
@@ -54,7 +54,8 @@
 処理時間: XX分
 
 ```text
-$ pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api "tool_name" '{"args":...}'
+# aws-mcp-server skillで実行
+$ pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws <service> <command> --args..."}'
 （出力結果）
 ```
 
@@ -140,7 +141,8 @@ FROM db_name.table_a
 - ジョブが失敗となり終了すること
 
 ```text
-$ pnpm exec tsx .claude/skills/aws-mcp-server/index.ts api "stepfunctions_DescribeExecution" '{"executionArn":"..."}'
+# aws-mcp-server skillで実行
+$ pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws stepfunctions describe-execution --execution-arn ..."}'
 （失敗結果）
 ```
 

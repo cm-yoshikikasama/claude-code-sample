@@ -24,7 +24,7 @@ pnpm run cdk destroy               # スタック削除
 
 ## ガイドライン
 
-- 必ず `pnpm run build` でビルドしてから `cdk synth` を実行
+- 必ず `pnpm run build` で型チェックしてから `cdk synth` を実行
 - Stack定義は必ず `cdk/lib/` に配置
 - AWS認証情報やアカウントIDをハードコードしない。代わりに `process.env.CDK_DEFAULT_ACCOUNT` や context を使用
 - TypeScriptの `any` 型は使わない。型推論が難しい場合は明示的に型定義

@@ -65,7 +65,7 @@ Arguments
 {
   "tool": "aws___call_aws",
   "success": true,
-  "preview": "2024-01-15 10:30:00 my-bucket\n2024-02-20 14:45:00 another-bucket..."
+  "result": "2024-01-15 10:30:00 my-bucket\n2024-02-20 14:45:00 another-bucket..."
 }
 ```
 
@@ -73,7 +73,7 @@ Arguments
 
 - IAM認証（SigV4）による細かいアクセス制御
 - CloudTrailでの監査ログ
-- トークン最適化（結果の要約・プレビュー）
+- MFA認証をセッション中に柔軟に実行可能
 
 ## AWS MCP Server Actions
 

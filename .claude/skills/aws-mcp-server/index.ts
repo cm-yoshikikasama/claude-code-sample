@@ -28,7 +28,7 @@ interface CompactSearchResult {
 interface ApiResult {
 	tool: string;
 	success: boolean;
-	preview: string;
+	result: string;
 	error?: string;
 }
 
@@ -120,7 +120,7 @@ async function callApi(toolName: string, args: string): Promise<ApiResult> {
 		return {
 			tool: toolName,
 			success: false,
-			preview: "",
+			result: "",
 			error: `Blocked: ${toolName} is a destructive operation. Only read-only operations are allowed.`,
 		};
 	}
@@ -129,25 +129,24 @@ async function callApi(toolName: string, args: string): Promise<ApiResult> {
 
 	try {
 		const parsedArgs = JSON.parse(args);
-		const result = (await callTool(toolName, parsedArgs)) as {
+		const response = (await callTool(toolName, parsedArgs)) as {
 			content?: Array<{ type: string; text?: string }>;
 		};
 
-		// Extract text content
-		const textContent = result.content?.find((c) => c.type === "text")?.text;
-		const preview =
-			textContent?.slice(0, 500) || JSON.stringify(result).slice(0, 500);
+		// Extract text content - return full result without truncation
+		const textContent = response.content?.find((c) => c.type === "text")?.text;
+		const fullResult = textContent || JSON.stringify(response);
 
 		return {
 			tool: toolName,
 			success: true,
-			preview,
+			result: fullResult,
 		};
 	} catch (error) {
 		return {
 			tool: toolName,
 			success: false,
-			preview: "",
+			result: "",
 			error: error instanceof Error ? error.message : String(error),
 		};
 	}
