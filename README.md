@@ -293,7 +293,7 @@ pnpm run cdk deploy
 
 | ドキュメント | 内容 |
 | --- | --- |
-| [Claude Code 5機能の使い分け](docs/claude_code_features.md) | Subagents、Skills、Rules、Hooks、Slash Commandsの詳細 |
+| [Claude Code 6機能の使い分け](docs/claude_code_features.md) | MCP、Subagents、Skills、Rules、Hooks、Slash Commandsの詳細 |
 | [参考資料](docs/references.md) | Claude Code活用のためのリンク集、MCP詳細 |
 | [ベストプラクティス](docs/claude_code_best_practices.md) | CLAUDE.md、コンテキスト管理、Hooks等のベストプラクティス |
 | [コンテキストガイド](docs/claude_context_guide.md) | コンテキスト管理の詳細ガイド |

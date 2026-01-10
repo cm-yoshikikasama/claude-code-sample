@@ -6,7 +6,6 @@ A comprehensive guide to effective Claude Code usage, extracted from production 
 
 - [CLAUDE.md](#claudemd)
 - [Context Management](#context-management)
-- [Slash Commands](#slash-commands)
 - [Custom Subagents](#custom-subagents)
 - [Hooks](#hooks)
 - [Planning Mode](#planning-mode)
@@ -97,10 +96,10 @@ For advanced usage or ToolSpecificError, see docs/tool-guide.md
 - Typical baseline: 10-20% for repo context, 80-90% for work
 - Be aware of your 200k token budget
 
-#### Simple Restart: /clear + /catchup
+#### Simple Restart: /clear + catchup
 
 - Default method for rebooting sessions
-- Create a custom `/catchup` command to read all changed files
+- After /clear, ask Claude to read all changed files in the branch
 - Quick and effective for most scenarios
 
 #### Complex Restart: Document & Clear
@@ -124,43 +123,6 @@ For advanced usage or ToolSpecificError, see docs/tool-guide.md
 - Letting your context window fill up slowly
 - Not proactively clearing when switching tasks
 - This leads to degraded performance and confusion
-
----
-
-## Slash Commands
-
-### Slash Commands Best Practices
-
-#### Keep It Minimal
-
-- Slash commands should be simple shortcuts for frequent prompts
-- Typical setup: 2-4 commands maximum
-- Examples:
-  - `/catchup` - Read all changed files in branch
-  - `/pr` - Clean up code and prepare PR
-
-#### Personal Shortcuts
-
-- Use them for your own workflow optimization
-- Not for enforcing team-wide processes
-
-### Slash Commands Anti-Patterns
-
-#### Command Proliferation
-
-- Creating long lists of complex commands
-- Forcing users to learn "magic commands"
-- This defeats the purpose of natural language interaction
-
-#### Using Commands as Documentation
-
-- Slash commands shouldn't replace good CLAUDE.md
-- They're shortcuts, not a way to structure your entire workflow
-
-#### Making Them Essential
-
-- If users can't work without knowing your custom commands, you've failed
-- The agent should work with natural language first
 
 ---
 

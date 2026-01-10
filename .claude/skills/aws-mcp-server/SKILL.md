@@ -1,6 +1,7 @@
 ---
 name: aws-mcp-server
 description: Access AWS MCP Server (Preview) for documentation search and API calls with IAM authentication and CloudTrail logging. Use when (1) searching AWS documentation with enterprise audit requirements, (2) making read-only AWS API calls, or (3) needing IAM-based access control for AI tools.
+context: fork
 ---
 
 # AWS MCP Server Skill

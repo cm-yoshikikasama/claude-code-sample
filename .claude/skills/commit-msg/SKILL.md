@@ -1,7 +1,7 @@
 ---
-allowed-tools: Bash(git status), Bash(git diff:*), Bash(git log:*)
+name: commit-msg
 description: Generate git commands (add, commit, push) ready to execute
-argument-hint: none
+allowed-tools: Bash(git status), Bash(git diff:*), Bash(git log:*)
 ---
 
 # Git Add, Commit, Push Command Generator

@@ -1,6 +1,14 @@
 ---
 name: aws-integration-testing
 description: Create integration test documents and evidence using aws-mcp-server script. Retrieve results with read-only commands and generate Markdown evidence. Job execution is performed by the user.
+context: fork
+allowed-tools:
+  - Read
+  - Grep
+  - Glob
+  - Bash
+  - Write
+  - Edit
 ---
 
 # AWS結合テスト

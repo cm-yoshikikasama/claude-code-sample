@@ -1,14 +1,14 @@
-# Claude Code 5機能の使い分け
+# Claude Code 6機能の使い分け
 
-本プロジェクトでは、Claude Codeの5つの主要機能を効果的に組み合わせています。
+本プロジェクトでは、Claude Codeの6つの主要機能を効果的に組み合わせています。
 
 ## 機能比較表
 
 | 機能 | 実行方式 | トリガー | 主な用途 | ファイル構造 |
 | --- | --- | --- | --- | --- |
+| MCP | ツール呼び出し | AI判断 or 明示呼び出し | 外部ツール連携（API、図生成等） | `.mcp.json` |
 | Subagents | モデル駆動 | AI自動判断 or 明示呼び出し | 複雑な専門タスク（独立コンテキスト） | `.claude/agents/*.md` |
-| Skills | モデル駆動 | AI自動発見 | 実装パターン・テンプレート提供 | `.claude/skills/*/` |
-| Slash Commands | ユーザー駆動 | `/command` 入力 | 頻繁な手動操作、クイックプロンプト | `.claude/commands/*.md` |
+| Skills | モデル駆動 | AI自動発見 or `/skill` 入力 | 実装パターン・テンプレート提供 | `.claude/skills/*/` |
 | Hooks | イベント駆動 | ツール実行時自動 | 強制的なルール（フォーマット、保護） | `.claude/hooks/` + `settings.json` |
 | Rules | 自動ロード | ファイル編集時 | プロジェクト規約・ガイドライン | `.claude/rules/*.md` |
 
@@ -45,14 +45,6 @@ Claudeが自動的に発見・使用する実装パターン集です。
 - 決定的な制御（LLM判断に頼らない）
 - フォーマッタやリンターを強制実行
 - SubagentStop時の自動レビュー促進
-
-### Slash Commands - 手動操作の効率化
-
-ユーザーが明示的に呼び出す頻繁に使うプロンプトです。
-
-- `/command` で即座に実行
-- 引数を受け取り可能
-- allowed-toolsで権限制限
 
 ## 本プロジェクトでの実装
 
@@ -114,14 +106,6 @@ format-all.sh は以下を自動実行
 - YAML: Prettier + yamllint
 - Markdown: Prettier + markdownlint
 
-### Slash Commands（1個）
-
-```text
-.claude/commands/commit-msg.md
-```
-
-使用例: `/commit-msg` と入力すると、git status/diff/logを確認し、適切なコミットメッセージと実行可能なコマンドを生成します。settings.jsonで git 操作を禁止しているため、コマンドを出力するのみでユーザーが手動実行します。
-
 ## 連携フロー実例
 
 Lambda関数実装の典型的なワークフロー
@@ -154,4 +138,97 @@ Lambda関数実装の典型的なワークフロー
    - レビューコメント生成
 
 結果: 品質の高いコード（Rules準拠、Skills適用、Subagentsレビュー済み、Hooks自動フォーマット済み）
+```
+
+## MCP (Model Context Protocol)
+
+外部ツールを呼び出すためのプロトコル。`.mcp.json` で定義します。
+
+### 本プロジェクトのMCP構成
+
+```text
+.mcp.json
+├── context7              - ライブラリドキュメント取得
+├── iam-policy-autopilot  - IAMポリシー生成
+└── aws-diagram-mcp-server - AWS図表生成（Python diagrams）
+```
+
+| MCP名 | 用途 | 使用例 |
+| --- | --- | --- |
+| context7 | ライブラリの最新ドキュメント取得 | 「boto3の最新APIを調べて」 |
+| iam-policy-autopilot | ソースコードからIAMポリシー生成 | 「このLambdaに必要な権限を生成して」 |
+| aws-diagram-mcp-server | Python diagramsでAWS構成図生成 | 「アーキテクチャ図をPNGで出力して」 |
+
+### トークン最適化設定
+
+`.claude/settings.json` で以下を設定することで、MCPツールを動的ロードしてトークン消費を削減できます。
+
+```json
+{
+  "env": {
+    "ENABLE_TOOL_SEARCH": "true",
+    "ENABLE_EXPERIMENTAL_MCP_CLI": "false"
+  }
+}
+```
+
+この設定により、MCPツール定義が事前にコンテキストに読み込まれず、必要時のみ動的にロードされます。
+
+## Skill vs MCP の使い分け
+
+本プロジェクトではSkillとMCPを明確に使い分けています。
+
+### 役割の違い
+
+| 観点 | Skill | MCP |
+| --- | --- | --- |
+| 役割 | ワークフロー・手順・ガイドライン | ツール呼び出し |
+| 内容 | 「どうやるか」「いつ使うか」 | 「何ができるか」 |
+| 形式 | Markdownドキュメント | 構造化されたAPI |
+| 読み込み | System Promptに常駐 | 動的ロード可能（ENABLE_TOOL_SEARCH） |
+
+### 選択基準
+
+| ユースケース             | 選択  | 理由                         |
+| ------------------------ | ----- | ---------------------------- |
+| 実装パターンを教えたい   | Skill | 手順・チェックリストが必要   |
+| 外部APIを呼び出したい    | MCP   | ツールとして機能提供         |
+| 認証フロー等の手順が複雑 | Skill | 人間が読める手順書として価値 |
+| 単純なツール呼び出し     | MCP   | 構造化されたインターフェース |
+
+### 本プロジェクトでの具体例
+
+#### Skillが適切なケース
+
+| Skill                   | 理由                                    |
+| ----------------------- | --------------------------------------- |
+| writing-python-lambdas  | 実装手順・チェックリストを提供          |
+| building-aws-cdk        | 実装パターン・命名規則を提供            |
+| checking-aws-security   | レビューワークフローを提供              |
+| aws-mcp-server          | MFA認証フロー・スクリプト実行手順を提供 |
+| aws-integration-testing | テストフロー・エビデンス作成手順を提供  |
+
+#### MCPが適切なケース
+
+| MCP                    | 理由                               |
+| ---------------------- | ---------------------------------- |
+| context7               | ドキュメント取得という単純なツール |
+| iam-policy-autopilot   | ポリシー生成という単純なツール     |
+| aws-diagram-mcp-server | 図生成という単純なツール           |
+
+#### 類似機能の使い分け
+
+AWS構成図作成には2つの方法があります。
+
+| 方法 | 実装 | 出力形式 | 使いどころ |
+| --- | --- | --- | --- |
+| creating-aws-diagrams (Skill) | Mermaid記法 | テキスト（Markdown埋め込み） | 設計書に埋め込み、テキストで編集したい |
+| aws-diagram-mcp-server (MCP) | Python diagrams | PNG画像 | GitHubでアイコン表示、画像として出力したい |
+
+workflow.md で選択基準を定義
+
+```text
+- Markdown内に埋め込み、テキストで編集したい → Mermaid (Skill)
+- GitHubでアイコン表示、画像として出力したい → Diagram MCP
+- 指定がなければデフォルトはMermaid
 ```
