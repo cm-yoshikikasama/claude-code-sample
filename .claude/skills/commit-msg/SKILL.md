@@ -1,7 +1,7 @@
 ---
 name: commit-msg
 description: Generate git commands (add, commit, push) ready to execute
-allowed-tools: Bash(git status), Bash(git diff:*), Bash(git log:*)
+allowed-tools: Bash(git status), Bash(git diff *), Bash(git log *)
 disable-model-invocation: true
 ---
 
