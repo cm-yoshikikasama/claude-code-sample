@@ -39,7 +39,7 @@ AWS CDK (TypeScript) + Python Lambdaプロジェクト。Claude Codeベストプ
 
 ### 必須ツール
 
-- Node.js 18+ (pnpm、CDK用)
+- Node.js 20+ (pnpm、CDK用)
 - Python 3.13+ (Lambda開発用)
 - pnpm (パッケージマネージャー)
 - AWS CLI (AWS操作用)
@@ -55,73 +55,28 @@ AWS CDK (TypeScript) + Python Lambdaプロジェクト。Claude Codeベストプ
 
 ### インストール手順
 
-#### macOS
-
-Homebrewを使用してインストールします。
+miseでNode.js、Python、pnpmのバージョンを管理します。
 
 ```bash
-# Homebrew (未インストールの場合)
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# miseのインストール（macOS）
+brew install mise
 
-# Node.js
-brew install node@18
+# シェルにmiseを有効化（~/.zshrcに追加）
+echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
+source ~/.zshrc
 
-# Python 3.13
-brew install python@3.13
+# リポジトリをクローン
+git clone https://github.com/yourusername/claude-code-sample.git
+cd claude-code-sample
 
-# pnpm (Homebrewまたはcurlでインストール)
-brew install pnpm
-# または
-# curl -fsSL https://get.pnpm.io/install.sh | sh -
+# ツールのインストール（mise.tomlに定義されたバージョン）
+mise install
 
-# AWS CLI
+# その他のツール（個別インストール）
 brew install awscli
-
-# AWS CDK CLI
 pnpm add -g aws-cdk
-
-# Claude Code CLI
 brew install claude-code
-
-# Git (通常はプリインストール済み)
-brew install git
-
-# 1Password CLI (オプション、MFA自動取得用)
-brew install --cask 1password-cli
-```
-
-#### Windows
-
-各ツールの公式インストーラーを使用します。
-
-```powershell
-# Node.js
-# https://nodejs.org/en/download からインストーラーをダウンロード
-
-# Python 3.13
-# https://www.python.org/downloads からインストーラーをダウンロード
-
-# pnpm (PowerShellで実行)
-iwr https://get.pnpm.io/install.ps1 -useb | iex
-# または Scoopを使用
-# scoop install nodejs
-# scoop install pnpm
-
-# AWS CLI
-# https://aws.amazon.com/cli からインストーラーをダウンロード
-
-# AWS CDK CLI
-pnpm add -g aws-cdk
-
-# Claude Code CLI
-# https://claude.com/download からインストーラーをダウンロード
-
-# Git
-# https://git-scm.com/download/win からインストーラーをダウンロード
-
-# 1Password CLI (オプション、MFA自動取得用)
-# https://developer.1password.com/docs/cli/get-started からダウンロード
-# または winget install 1Password.CLI
+brew install --cask 1password-cli  # オプション
 ```
 
 ### AWS CLI設定
