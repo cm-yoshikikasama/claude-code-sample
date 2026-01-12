@@ -69,6 +69,9 @@ source ~/.zshrc
 git clone https://github.com/yourusername/claude-code-sample.git
 cd claude-code-sample
 
+# 設定ファイルを信頼（初回のみ）
+mise trust
+
 # ツールのインストール（mise.tomlに定義されたバージョン）
 mise install
 
