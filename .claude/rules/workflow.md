@@ -57,6 +57,11 @@ Plan Mode中の必須チェックリスト
 - GitHubでアイコン表示、画像として出力したい → Diagram MCP
 - 指定がなければデフォルトはMermaid
 
+指示例
+
+- Mermaid: 「構成図を書いて」「README.mdに構成図を追加して」
+- Diagram MCP: 「構成図を画像で作成して」「PNGで構成図を生成して」
+
 フロー
 
 1. design-doc-writer（設計書作成、新規プロジェクトは必須）
