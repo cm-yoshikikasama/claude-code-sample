@@ -1,6 +1,7 @@
 {
 	"model": "opus",
 	"outputStyle": "Explanatory",
+	"plansDirectory": ".claude/plans",
 	"env": {
 		"CLAUDE_CODE_ENABLE_TELEMETRY": "0",
 		"BASH_DEFAULT_TIMEOUT_MS": "120000",
