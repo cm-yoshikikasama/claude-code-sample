@@ -47,6 +47,7 @@ npm-debug.log*
 # Claude Code
 CLAUDE.local.md
 .claude/settings.local.json
+.claude/plans/
 tmp.md
 
 # mise
