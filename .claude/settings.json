@@ -50,7 +50,10 @@
 			"WebFetch(domain:anthropic.com)",
 			"WebFetch(domain:*.anthropic.com)",
 			"WebFetch(domain:zenn.dev)",
-			"WebFetch(domain:qiita.com)"
+			"WebFetch(domain:qiita.com)",
+			"mcp__aws-diagram-mcp-server__*",
+			"mcp__context7__*",
+			"mcp__iam-policy-autopilot__*"
 		],
 		"deny": [
 			"Bash(git add *)",
