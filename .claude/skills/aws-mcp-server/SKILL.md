@@ -26,14 +26,14 @@ pnpm install
 
 ```bash
 AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
-  pnpm exec tsx index.ts search "Lambda concurrency" 5
+  pnpm exec tsx scripts/index.ts search "Lambda concurrency" 5
 ```
 
 ### APIコール（AWS API機能）- 参照系のみ
 
 ```bash
 AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
-  pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws s3 ls"}'
+  pnpm exec tsx scripts/index.ts api "aws___call_aws" '{"cli_command":"aws s3 ls"}'
 ```
 
 Arguments

@@ -1,20 +1,38 @@
 ---
 name: creating-aws-diagrams
-description: Creates AWS architecture diagrams using Mermaid flowchart with official AWS icons, clickable nodes, and proper layout. Use when creating or updating AWS infrastructure diagrams, visualizing CDK stacks, or documenting system architecture.
+description: MUST use this skill when user requests Mermaid diagrams, AWS diagrams, architecture diagrams, 構成図, or アーキテクチャ図. Creates diagrams using Mermaid (with Iconify AWS icons) or Diagram MCP (PNG output). 
 ---
 
 # AWS構成図作成
 
 AWS構成図を作成するための2つの方式
 
-## 方式の選択
+## 最初に方式を選択
+
+ユーザーの指示から方式を判断する
+
+| ユーザーの指示例 | 選択する方式 |
+| --- | --- |
+| 「構成図を書いて」「README.mdに追加して」「Markdownで」 | Mermaid |
+| 「画像で作成して」「PNGで生成して」「構成図を画像出力」 | Diagram MCP |
+| 明確な指定なし | AskUserQuestionで確認 |
+
+### 判断できない場合
+
+AskUserQuestionツールで確認する
+
+- question: どちらの形式で構成図を作成しますか?
+- header: 図の形式
+- options:
+  - Mermaid（Markdown埋め込み、テキスト編集向け）
+  - Diagram MCP（PNG画像出力、AWSアイコン確実表示）
+
+## 方式の比較
 
 | 方式 | 用途 | メリット |
-| ---- | ---- | -------- |
+| --- | --- | --- |
 | Mermaid | Markdown埋め込み、テキスト編集 | バージョン管理しやすい、編集が容易 |
 | Diagram MCP | GitHub表示、画像出力 | AWSアイコン確実に表示、レイアウト安定 |
-
-指定がなければMermaidを使用
 
 ## Mermaid
 
@@ -36,7 +54,7 @@ lambda@{img: "https://api.iconify.design/logos/aws-lambda.svg",label: "lambda:<b
 | ECS      | cluster/service    |
 | RDS      | db-cluster-id      |
 
-詳細: [mermaid-guide.md](mermaid-guide.md)
+詳細: [guides/mermaid-guide.md](guides/mermaid-guide.md)
 
 ## Diagram MCP
 
@@ -56,4 +74,4 @@ with Diagram("タイトル", show=False, direction="LR"):
 - メインフローは単一チェーン接続
 - IAMロールは関連Cluster内に配置
 
-詳細: [diagram-mcp-guide.md](diagram-mcp-guide.md)
+詳細: [guides/diagram-mcp-guide.md](guides/diagram-mcp-guide.md)

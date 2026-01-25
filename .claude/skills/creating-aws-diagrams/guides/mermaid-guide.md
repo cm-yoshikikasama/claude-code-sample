@@ -114,28 +114,28 @@ elb-xxxx1@{img: "https://api.iconify.design/logos/aws-elb.svg",label: "elb:<br>t
 
 ### ノードID規則
 
-| サービス | ノードID例 | 理由 |
-|---------|-----------|------|
-| ELB | elb-xxxx1 (DNSName) | 一意で短い |
-| EC2 | ec2-i-xxxx1 (InstanceId) | 一意で短い |
-| ECS | ecs-cluster/api1 (Cluster/Service) | 一意で短い |
-| RDS | rds-xxxx1 (DBClusterIdentifier) | 一意で短い |
-| S3 | s3-xxxx1 (BucketName) | 一意で短い |
+| サービス | ノードID例                         | 理由       |
+| -------- | ---------------------------------- | ---------- |
+| ELB      | elb-xxxx1 (DNSName)                | 一意で短い |
+| EC2      | ec2-i-xxxx1 (InstanceId)           | 一意で短い |
+| ECS      | ecs-cluster/api1 (Cluster/Service) | 一意で短い |
+| RDS      | rds-xxxx1 (DBClusterIdentifier)    | 一意で短い |
+| S3       | s3-xxxx1 (BucketName)              | 一意で短い |
 
 ### 主要AWSアイコンURL
 
-| サービス | URL |
-|---------|-----|
-| ELB | <https://api.iconify.design/logos/aws-elb.svg> |
-| EC2 | <https://api.iconify.design/logos/aws-ec2.svg> |
-| ECS | <https://api.iconify.design/logos/aws-ecs.svg> |
-| RDS | <https://api.iconify.design/logos/aws-rds.svg> |
-| S3 | <https://api.iconify.design/logos/aws-s3.svg> |
-| Lambda | <https://api.iconify.design/logos/aws-lambda.svg> |
-| DynamoDB | <https://api.iconify.design/logos/aws-dynamodb.svg> |
+| サービス   | URL                                                   |
+| ---------- | ----------------------------------------------------- |
+| ELB        | <https://api.iconify.design/logos/aws-elb.svg>        |
+| EC2        | <https://api.iconify.design/logos/aws-ec2.svg>        |
+| ECS        | <https://api.iconify.design/logos/aws-ecs.svg>        |
+| RDS        | <https://api.iconify.design/logos/aws-rds.svg>        |
+| S3         | <https://api.iconify.design/logos/aws-s3.svg>         |
+| Lambda     | <https://api.iconify.design/logos/aws-lambda.svg>     |
+| DynamoDB   | <https://api.iconify.design/logos/aws-dynamodb.svg>   |
 | CloudFront | <https://api.iconify.design/logos/aws-cloudfront.svg> |
-| Route53 | <https://api.iconify.design/logos/aws-route53.svg> |
-| IAM | <https://api.iconify.design/logos/aws-iam.svg> |
+| Route53    | <https://api.iconify.design/logos/aws-route53.svg>    |
+| IAM        | <https://api.iconify.design/logos/aws-iam.svg>        |
 
 完全なリスト: <https://icon-sets.iconify.design/logos/> (aws-で検索)
 
@@ -503,13 +503,13 @@ class data groupStyle
 
 基本テンプレート
 
-```
+```text
 label: "サービス名"
 ```
 
 カスタマイズ例
 
-```
+```text
 label: "Step Functions .sync統合"
 label: "Athena DELETE + INSERT"
 label: "S3 Source CSV"
@@ -527,7 +527,7 @@ label: "S3 Target Parquet"
 接続の種類
 
 | 接続 | 用途 | 例 |
-| ---- | ---- | -- |
+| --- | --- | --- |
 | `-->` | 主要なデータフロー | EventBridge → Step Functions → Athena |
 | `~~~` | subgraph内の配置調整（非表示） | Glue ~~~ S3 Source ~~~ S3 Target |
 | `-.->` | 関連リソース（サポート） | Step Functions -.-> IAM Role |

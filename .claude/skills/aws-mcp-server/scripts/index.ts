@@ -160,14 +160,14 @@ async function showTools(): Promise<void> {
 
 function printUsage(): void {
 	console.error("Usage:");
-	console.error("  tsx index.ts search <query> [limit]");
-	console.error("  tsx index.ts api <tool_name> <args_json>");
-	console.error("  tsx index.ts tools");
+	console.error("  tsx scripts/index.ts search <query> [limit]");
+	console.error("  tsx scripts/index.ts api <tool_name> <args_json>");
+	console.error("  tsx scripts/index.ts tools");
 	console.error("");
 	console.error("Examples:");
-	console.error('  tsx index.ts search "Lambda concurrency" 5');
-	console.error("  tsx index.ts api s3_ListBuckets '{}'");
-	console.error("  tsx index.ts tools");
+	console.error('  tsx scripts/index.ts search "Lambda concurrency" 5');
+	console.error("  tsx scripts/index.ts api s3_ListBuckets '{}'");
+	console.error("  tsx scripts/index.ts tools");
 	console.error("");
 	console.error("Note: AWS credentials must be set via environment variables:");
 	console.error(

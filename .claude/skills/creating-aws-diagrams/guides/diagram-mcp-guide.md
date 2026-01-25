@@ -2,12 +2,32 @@
 
 Python diagramsパッケージを使用してPNG画像を生成する
 
+## スクリプト経由での呼び出し
+
+MCP直接呼び出しはトークン消費が大きいため、スクリプト経由で呼び出す
+
+```bash
+cd .claude/skills/creating-aws-diagrams
+
+# アイコン一覧
+pnpm exec tsx scripts/index.ts icons aws compute
+
+# サンプルコード取得
+pnpm exec tsx scripts/index.ts examples aws
+
+# ダイアグラム生成（ヒアドキュメントでコードを渡す）
+pnpm exec tsx scripts/index.ts generate architecture /path/to/project << 'EOF'
+with Diagram("Pipeline", show=False, direction="LR"):
+    S3("source") >> Lambda("fn") >> S3("target")
+EOF
+```
+
 ## 用途の選択
 
-| 方式 | 用途 | メリット |
-| ---- | ---- | -------- |
-| Mermaid | Markdown埋め込み、テキスト編集 | バージョン管理しやすい |
-| Diagram MCP | GitHub表示、画像出力 | AWSアイコン確実に表示 |
+| 方式        | 用途                           | メリット               |
+| ----------- | ------------------------------ | ---------------------- |
+| Mermaid     | Markdown埋め込み、テキスト編集 | バージョン管理しやすい |
+| Diagram MCP | GitHub表示、画像出力           | AWSアイコン確実に表示  |
 
 ## 基本構文
 
@@ -118,58 +138,58 @@ with Diagram("Salesforce to S3 - AWS Glue Zero ETL", show=False, direction="LR")
 
 ### AWS Analytics
 
-| クラス名 | サービス |
-| -------- | -------- |
-| Athena | Amazon Athena |
-| Glue | AWS Glue |
+| クラス名        | サービス          |
+| --------------- | ----------------- |
+| Athena          | Amazon Athena     |
+| Glue            | AWS Glue          |
 | GlueDataCatalog | Glue Data Catalog |
-| Redshift | Amazon Redshift |
+| Redshift        | Amazon Redshift   |
 
 ### AWS Storage
 
-| クラス名 | サービス |
-| -------- | -------- |
-| S3 | Amazon S3 |
+| クラス名 | サービス  |
+| -------- | --------- |
+| S3       | Amazon S3 |
 
 ### AWS Security
 
-| クラス名 | サービス |
-| -------- | -------- |
+| クラス名       | サービス        |
+| -------------- | --------------- |
 | SecretsManager | Secrets Manager |
-| IAMRole | IAM Role |
+| IAMRole        | IAM Role        |
 
 ### AWS Compute
 
-| クラス名 | サービス |
-| -------- | -------- |
-| Lambda | AWS Lambda |
-| ECS | Amazon ECS |
-| EKS | Amazon EKS |
+| クラス名 | サービス   |
+| -------- | ---------- |
+| Lambda   | AWS Lambda |
+| ECS      | Amazon ECS |
+| EKS      | Amazon EKS |
 
 ### AWS Database
 
-| クラス名 | サービス |
-| -------- | -------- |
-| RDS | Amazon RDS |
+| クラス名 | サービス        |
+| -------- | --------------- |
+| RDS      | Amazon RDS      |
 | DynamoDB | Amazon DynamoDB |
-| Aurora | Amazon Aurora |
+| Aurora   | Amazon Aurora   |
 
 ### AWS Integration
 
-| クラス名 | サービス |
-| -------- | -------- |
-| Eventbridge | Amazon EventBridge |
-| SQS | Amazon SQS |
-| SNS | Amazon SNS |
+| クラス名      | サービス           |
+| ------------- | ------------------ |
+| Eventbridge   | Amazon EventBridge |
+| SQS           | Amazon SQS         |
+| SNS           | Amazon SNS         |
 | StepFunctions | AWS Step Functions |
 
 ### 外部サービス
 
-| クラス名 | 用途 |
-| -------- | ---- |
+| クラス名              | 用途                         |
+| --------------------- | ---------------------------- |
 | GenericOfficeBuilding | 外部システム（Salesforce等） |
-| User | ユーザー |
-| Users | 複数ユーザー |
+| User                  | ユーザー                     |
+| Users                 | 複数ユーザー                 |
 
 ## 接続の種類
 
@@ -212,12 +232,17 @@ a >> Edge(color="red") >> b
 
 ## ファイル出力
 
-必ずプロジェクトディレクトリを `workspace_dir` に指定する
+ヒアドキュメントでコードを渡してダイアグラムを生成
 
-```python
-# MCP呼び出し時
-workspace_dir = "/path/to/project"  # 例: 59_salesforce_glue_zeroetl
-filename = "architecture"
+```bash
+cd .claude/skills/creating-aws-diagrams
+
+# 引数: filename, workspace_dir
+# コードは標準入力から読み取る
+pnpm exec tsx scripts/index.ts generate architecture /path/to/project << 'EOF'
+with Diagram("Architecture", show=False, direction="LR"):
+    S3("source") >> Glue("ETL") >> S3("target")
+EOF
 ```
 
 生成先: `(project)/generated-diagrams/architecture.png`
