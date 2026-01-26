@@ -5,7 +5,7 @@ AWS操作は必ずMCPスクリプト経由で実行する。AWS CLIの直接実�
 ## 基本原則
 
 - AWS CLIを直接実行してはいけない
-- `.claude/skills/aws-mcp-server` skill経由でAWS操作を行う
+- `skills/aws-mcp-server` skill経由でAWS操作を行う
 - 破壊的操作はスクリプト内でブロック済み
 
 ## MFA認証フロー
@@ -18,7 +18,7 @@ MFA認証が必要な環境では、以下の順序で実行する
    - `op item get "AWS" --vault Employee --otp`
 4. `aws sts assume-role`で一時認証情報を取得
 5. 取得した認証情報を環境変数として設定し、MCPスクリプトを実行
-   - `cd .claude/skills/aws-mcp-server && env AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz pnpm exec tsx index.ts <command> <args>`
+   - `cd skills/aws-mcp-server && env AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz pnpm exec tsx index.ts <command> <args>`
 6. 一時認証情報は約1時間有効なため、同じセッション内で複数のコマンドを実行可能
 
 ### 1Password CLIが使えない場合
@@ -29,7 +29,7 @@ MFA認証が必要な環境では、以下の順序で実行する
 
 ```bash
 # aws-mcp-serverディレクトリで実行
-cd .claude/skills/aws-mcp-server && \
+cd skills/aws-mcp-server && \
   env AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
   pnpm exec tsx index.ts <command> <args>
 ```

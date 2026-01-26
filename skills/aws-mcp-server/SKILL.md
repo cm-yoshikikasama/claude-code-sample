@@ -16,7 +16,7 @@ AWSが提供するフルマネージドのリモートMCPサーバーに接続�
 ## Setup
 
 ```bash
-cd .claude/skills/aws-mcp-server
+cd skills/aws-mcp-server
 pnpm install
 ```
 

@@ -28,7 +28,7 @@ aws-operations.md に従い、aws-mcp-server skill経由でAWS操作を行う
 ### スクリプト実行例
 
 ```bash
-cd .claude/skills/aws-mcp-server && \
+cd skills/aws-mcp-server && \
   env AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
   pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws s3 ls"}'
 ```
@@ -176,4 +176,4 @@ pnpm exec tsx index.ts search "Lambda concurrency" 5
 ## 参考
 
 - AWS操作詳細: .claude/rules/aws-operations.md
-- スクリプト詳細: .claude/skills/aws-mcp-server/SKILL.md
+- スクリプト詳細: skills/aws-mcp-server/SKILL.md

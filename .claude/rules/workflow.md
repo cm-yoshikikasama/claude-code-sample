@@ -80,7 +80,7 @@ Plan Mode中の必須チェックリスト
 
 - プロジェクト内設計書（design.md）: 重要な実装変更があれば反映
 - .claude/rules/: ユーザー指摘の開発方針（「この書き方やめて」「pnpm使って」）
-- .claude/agents/: subagentの改善が必要な箇所
+- agents/: subagentの改善が必要な箇所
 - Markdownルール（@.claude/rules/markdown.md）遵守
 
 更新不要

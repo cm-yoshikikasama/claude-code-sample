@@ -43,7 +43,7 @@ aws-operations.md に従い、aws-mcp-server skill経由でAWS操作を行う
 ### スクリプト実行例
 
 ```bash
-cd .claude/skills/aws-mcp-server && \
+cd skills/aws-mcp-server && \
   env AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=yyy AWS_SESSION_TOKEN=zzz \
   pnpm exec tsx index.ts api "aws___call_aws" '{"cli_command":"aws s3 ls"}'
 ```

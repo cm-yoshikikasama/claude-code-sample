@@ -160,6 +160,25 @@ cd claude-code-sample
 
 このリポジトリには `.vscode/extensions.json` が含まれており、VS Codeでプロジェクトを開くと、推奨拡張機能のインストールを自動的に提案します。
 
+### LSPサーバーのセットアップ
+
+Claude Codeのコード補完、型エラー検出、定義ジャンプ機能を使用するには、言語サーバーのインストールが必要です。
+
+```bash
+# TypeScript Language Server
+pnpm add -g typescript-language-server typescript
+
+# Python Language Server (Pyright)
+pnpm add -g pyright
+```
+
+このリポジトリの `.claude/settings.json` には、以下のLSPプラグインが設定済みです。
+
+- `typescript-lsp@claude-plugins-official`
+- `pyright-lsp@claude-plugins-official`
+
+バイナリをインストール後、Claude Code起動時に自動的にプラグインが有効化されます。
+
 ### Claude Code CLIの起動
 
 ```bash
@@ -235,6 +254,61 @@ pnpm run cdk diff
 # デプロイ (初回は承認が必要)
 pnpm run cdk deploy
 ```
+
+## このリポジトリをプラグインとして使用する
+
+このリポジトリには、AWS CDK + Python開発用のagents、skills、hooksが含まれており、他のプロジェクトでも再利用できます。
+
+### プラグインに含まれる機能
+
+- Agents 6個（設計書作成、調査、実装、レビュー、テスト）
+- Skills 7個（CDK、Python Lambda、セキュリティ、図作成等）
+- Hooks 3種類（自動フォーマット、通知音）
+
+### 設定方法
+
+他のプロジェクトの `.claude/settings.json` に追加:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "claude-code-sample": {
+      "source": {
+        "source": "github",
+        "repo": "cm-yoshikikasama/claude-code-sample"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "claude-code-sample@claude-code-sample": true
+  }
+}
+```
+
+全プロジェクトで使う場合は `~/.claude/settings.json` に設定してください。
+
+### ローカル開発用の設定
+
+このリポジトリをcloneして開発・テストする場合は、CLIコマンドでマーケットプレースを追加します。
+
+```bash
+# 例: ~/Documents/git/claude-code-sample にcloneした場合
+/plugin marketplace add ~/Documents/git
+```
+
+ローカルマーケットプレースはclone先の親ディレクトリを指定します。Claude Codeは `親ディレクトリ/claude-code-sample/.claude-plugin/plugin.json` を探します。
+
+```text
+~/Documents/git/                ← このパスを指定
+└── claude-code-sample/         ← cloneしたリポジトリ
+    └── .claude-plugin/
+        └── plugin.json
+```
+
+### 注意事項
+
+- 通知サウンドはmacOS専用です
+- permissions、env変数、statusLineは各プロジェクトで個別設定が必要です
 
 ## 詳細ガイドライン
 

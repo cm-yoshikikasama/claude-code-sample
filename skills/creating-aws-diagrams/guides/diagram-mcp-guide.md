@@ -7,7 +7,7 @@ Python diagramsパッケージを使用してPNG画像を生成する
 MCP直接呼び出しはトークン消費が大きいため、スクリプト経由で呼び出す
 
 ```bash
-cd .claude/skills/creating-aws-diagrams
+cd skills/creating-aws-diagrams
 
 # アイコン一覧
 pnpm exec tsx scripts/index.ts icons aws compute
@@ -235,7 +235,7 @@ a >> Edge(color="red") >> b
 ヒアドキュメントでコードを渡してダイアグラムを生成
 
 ```bash
-cd .claude/skills/creating-aws-diagrams
+cd skills/creating-aws-diagrams
 
 # 引数: filename, workspace_dir
 # コードは標準入力から読み取る

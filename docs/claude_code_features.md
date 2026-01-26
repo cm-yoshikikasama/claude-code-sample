@@ -7,9 +7,9 @@
 | 機能 | 実行方式 | トリガー | 主な用途 | ファイル構造 |
 | --- | --- | --- | --- | --- |
 | MCP | ツール呼び出し | AI判断 or 明示呼び出し | 外部ツール連携（API、図生成等） | `.mcp.json` |
-| Subagents | モデル駆動 | AI自動判断 or 明示呼び出し | 複雑な専門タスク（独立コンテキスト） | `.claude/agents/*.md` |
-| Skills | モデル駆動 | AI自動発見 or `/skill` 入力 | 実装パターン・テンプレート提供 | `.claude/skills/*/` |
-| Hooks | イベント駆動 | ツール実行時自動 | 強制的なルール（フォーマット、保護） | `.claude/hooks/` + `settings.json` |
+| Subagents | モデル駆動 | AI自動判断 or 明示呼び出し | 複雑な専門タスク（独立コンテキスト） | `agents/*.md` |
+| Skills | モデル駆動 | AI自動発見 or `/skill` 入力 | 実装パターン・テンプレート提供 | `skills/*/` |
+| Hooks | イベント駆動 | ツール実行時自動 | 強制的なルール（フォーマット、保護） | `hooks/` + `settings.json` |
 | Rules | 自動ロード | ファイル編集時 | プロジェクト規約・ガイドライン | `.claude/rules/*.md` |
 
 ## 各機能の概要
@@ -68,7 +68,7 @@ Claudeが自動的に発見・使用する実装パターン集です。
 ### Skills（4個）
 
 ```text
-.claude/skills/
+skills/
 ├── writing-python-lambdas/    - Python Lambda実装パターン
 ├── building-aws-cdk/          - CDK実装パターン
 ├── checking-aws-security/     - セキュリティチェックリスト
@@ -80,7 +80,7 @@ Claudeが自動的に発見・使用する実装パターン集です。
 ### Subagents（5個）
 
 ```text
-.claude/agents/
+agents/
 ├── reviewer.md            - コードレビュー（skills: 3個参照）
 ├── design-doc-writer.md   - 設計書作成
 ├── tester.md             - テスト実行

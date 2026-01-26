@@ -383,7 +383,7 @@ statusline-setup
 
 カスタム Subagent：
 
-- `.claude/agents/` ディレクトリに Markdown ファイルで定義
+- `agents/` ディレクトリに Markdown ファイルで定義
 - カスタムシステムプロンプト、ツール権限、モデル選択が可能
 - 例：code-reviewer、debugger、data-scientist など
 
@@ -600,7 +600,7 @@ Subagent を選ぶべき場面：
 
 - 繰り返し実行するワークフロー
 - チーム協働が必要な場合
-- 専門知識を永続的に保持したい（`.claude/agents/` に定義）
+- 専門知識を永続的に保持したい（`agents/` に定義）
 
 Task Tool を選ぶべき場面：
 
