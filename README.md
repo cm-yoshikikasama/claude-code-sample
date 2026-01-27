@@ -16,10 +16,19 @@ AWS CDK (TypeScript) + Python Lambdaプロジェクト。Claude Codeベストプ
 ```text
 .
 ├── .claude/                       # Claude Code設定
-│   ├── agents/                    # Subagent定義
 │   ├── rules/                     # プロジェクトルール
-│   ├── skills/                    # スキル定義
-│   └── hooks/                     # フック設定
+│   ├── plans/                     # 計画ファイル
+│   └── settings.json              # プロジェクト設定
+├── .claude-plugin/                # プラグインマーケットプレース定義
+│   └── marketplace.json
+├── plugins/                       # プラグイン本体
+│   └── aws-cdk-workflow/          # AWS CDK開発ワークフロープラグイン
+│       ├── .claude-plugin/
+│       │   └── plugin.json
+│       ├── agents/                # Subagent定義（6個）
+│       ├── skills/                # スキル定義（7個）
+│       ├── hooks/                 # フック設定
+│       └── .mcp.json              # MCP設定
 ├── docs/                          # ドキュメント
 ├── sample_*/                      # サンプルプロジェクト
 │   ├── cdk/                       # CDKインフラコード (TypeScript)
@@ -28,7 +37,6 @@ AWS CDK (TypeScript) + Python Lambdaプロジェクト。Claude Codeベストプ
 │   │   └── package.json
 │   ├── resources/                 # Pythonコード（Lambda、Glue等）
 │   └── sql/                       # SQLスクリプト（必要に応じて）
-├── .mcp.json                      # MCP設定（MCPサーバー定義）
 ├── CLAUDE.md                      # プロジェクト指示（主要ガイドライン）
 └── README.md                      # このファイル
 ```
@@ -257,7 +265,23 @@ pnpm run cdk deploy
 
 ## このリポジトリをプラグインとして使用する
 
-このリポジトリには、AWS CDK + Python開発用のagents、skills、hooksが含まれており、他のプロジェクトでも再利用できます。
+このリポジトリには、AWS CDK + Python開発用のagents、skills、hooksがプラグインとして含まれており、別リポジトリから参照して再利用できます。
+
+### プラグイン構造
+
+```text
+claude-code-sample/
+├── .claude-plugin/
+│   └── marketplace.json              # マーケットプレース定義（プラグイン一覧）
+└── plugins/
+    └── aws-cdk-workflow/             # プラグイン本体
+        ├── .claude-plugin/
+        │   └── plugin.json           # プラグインメタデータ
+        ├── agents/                   # Subagent定義（6個）
+        ├── skills/                   # スキル定義（7個）
+        ├── hooks/                    # フック設定（自動フォーマット、通知音）
+        └── .mcp.json                 # MCP設定
+```
 
 ### プラグインに含まれる機能
 
@@ -265,14 +289,14 @@ pnpm run cdk deploy
 - Skills 7個（CDK、Python Lambda、セキュリティ、図作成等）
 - Hooks 3種類（自動フォーマット、通知音）
 
-### 設定方法
+### 方法1: GitHubリポジトリから参照
 
-他のプロジェクトの `.claude/settings.json` に追加:
+別プロジェクトの `.claude/settings.json` に以下を追加します。
 
 ```json
 {
   "extraKnownMarketplaces": {
-    "claude-code-sample": {
+    "cm-kasama-plugins": {
       "source": {
         "source": "github",
         "repo": "cm-yoshikikasama/claude-code-sample"
@@ -280,35 +304,47 @@ pnpm run cdk deploy
     }
   },
   "enabledPlugins": {
-    "claude-code-sample@claude-code-sample": true
+    "aws-cdk-workflow@cm-kasama-plugins": true
   }
 }
 ```
 
-全プロジェクトで使う場合は `~/.claude/settings.json` に設定してください。
+全プロジェクト共通で使う場合は `~/.claude/settings.json` に設定してください。
 
-### ローカル開発用の設定
+### 方法2: ローカルディレクトリから参照
 
-このリポジトリをcloneして開発・テストする場合は、CLIコマンドでマーケットプレースを追加します。
+このリポジトリをcloneして、ローカルパスから参照する方法です。開発・テスト用途に適しています。
 
-```bash
-# 例: ~/Documents/git/claude-code-sample にcloneした場合
-/plugin marketplace add ~/Documents/git
+別プロジェクトの `.claude/settings.json` に以下を追加します。
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "local-plugins": {
+      "source": {
+        "source": "directory",
+        "path": "<このリポジトリをcloneした絶対パス>"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "aws-cdk-workflow@cm-kasama-plugins": true
+  }
+}
 ```
 
-ローカルマーケットプレースはclone先の親ディレクトリを指定します。Claude Codeは `親ディレクトリ/claude-code-sample/.claude-plugin/plugin.json` を探します。
+`path` にはこのリポジトリをcloneしたディレクトリの絶対パスを指定します。Claude Codeは指定パス直下の `.claude-plugin/marketplace.json` を読み取り、プラグインを検出します。
 
-```text
-~/Documents/git/                ← このパスを指定
-└── claude-code-sample/         ← cloneしたリポジトリ
-    └── .claude-plugin/
-        └── plugin.json
+```bash
+# 例: cloneしたパスを確認
+cd claude-code-sample && pwd
 ```
 
 ### 注意事項
 
-- 通知サウンドはmacOS専用です
-- permissions、env変数、statusLineは各プロジェクトで個別設定が必要です
+- 通知サウンドはmacOS専用です（`afplay` コマンドを使用）
+- permissions、env変数、statusLineはプラグインに含まれないため、各プロジェクトで個別設定が必要です
+- `enabledPlugins` のキーは `<プラグイン名>@<marketplace.jsonのname>` の形式です（`extraKnownMarketplaces` のキー名ではない）
 
 ## 詳細ガイドライン
 

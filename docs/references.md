@@ -110,7 +110,7 @@ AWS MCP Server専用のIAMアクションでAI経由のアクセスのみを制�
 
 #### 本プロジェクトでの設定
 
-本プロジェクトではaws-mcp-server skill（`skills/aws-mcp-server/`）を使用。MFA認証をセッション中に柔軟に実行可能。
+本プロジェクトではaws-mcp-server skill（`plugins/aws-cdk-workflow/skills/aws-mcp-server/`）を使用。MFA認証をセッション中に柔軟に実行可能。
 
 MFA認証フローの詳細は @.claude/rules/aws-operations.md を参照。
 

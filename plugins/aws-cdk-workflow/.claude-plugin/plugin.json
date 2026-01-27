@@ -1,0 +1,8 @@
+{
+  "name": "aws-cdk-workflow",
+  "version": "1.0.0",
+  "description": "AWS CDK (TypeScript) + Python Lambda development workflow with agents, skills, hooks, and MCP integrations",
+  "author": {
+    "name": "cm-yoshikikasama"
+  }
+}

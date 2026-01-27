@@ -1,0 +1,14 @@
+{
+	"name": "cm-kasama-plugins",
+	"owner": {
+		"name": "cm-yoshikikasama"
+	},
+	"plugins": [
+		{
+			"name": "aws-cdk-workflow",
+			"source": "./plugins/aws-cdk-workflow",
+			"description": "AWS CDK (TypeScript) + Python Lambda development workflow",
+			"version": "1.0.0"
+		}
+	]
+}

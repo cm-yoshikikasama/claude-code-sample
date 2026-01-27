@@ -1,0 +1,17 @@
+{
+  "description": "Automatic code formatting and notification hooks for development workflow",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/format-all.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
