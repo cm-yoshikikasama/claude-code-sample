@@ -320,7 +320,7 @@ claude-code-sample/
 ```json
 {
   "extraKnownMarketplaces": {
-    "local-plugins": {
+    "cm-kasama-plugins": {
       "source": {
         "source": "directory",
         "path": "<このリポジトリをcloneした絶対パス>"
