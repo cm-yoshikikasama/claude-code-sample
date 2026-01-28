@@ -61,8 +61,7 @@
       "WebFetch(domain:zenn.dev)",
       "WebFetch(domain:qiita.com)",
       "mcp__aws-diagram-mcp-server__*",
-      "mcp__context7__*",
-      "mcp__iam-policy-autopilot__*"
+      "mcp__context7__*"
     ],
     "deny": [
       "Bash(git add *)",

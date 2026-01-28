@@ -140,7 +140,7 @@ MFA認証フローの詳細は @.claude/rules/aws-operations.md を参照。
 
 AWS MCP ServerはMFA認証が必要なため、aws-mcp-server skill経由でコードから実行する方式を採用。これによりセッション中に柔軟にMFA認証を行い、一時認証情報を環境変数として渡すことが可能。
 
-一方、context7やiam-policy-autopilot等の認証不要なMCPサーバーは.mcp.jsonで直接定義している。
+一方、context7等の認証不要なMCPサーバーは.mcp.jsonで直接定義している。
 
 ## Tips・実践例
 

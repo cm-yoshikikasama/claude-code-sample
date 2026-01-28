@@ -3,7 +3,7 @@ name: reviewer
 description: Code review agent. Comprehensive review from CDK, Python, security, and best practices perspectives
 tools: Read, Grep, Glob, Bash
 model: opus
-skills: building-aws-cdk, writing-python-lambdas, checking-aws-security
+skills: checking-aws-security
 ---
 
 # Reviewer Agent
@@ -34,7 +34,7 @@ skills: building-aws-cdk, writing-python-lambdas, checking-aws-security
 
 ### 1. TypeScript/CDK
 
-詳細なコーディング規約とパターンは building-aws-cdk スキルを参照
+以下の観点でレビュー
 
 〈型安全性〉
 
@@ -56,7 +56,7 @@ skills: building-aws-cdk, writing-python-lambdas, checking-aws-security
 
 ### 2. Python
 
-詳細なコーディング規約とパターンは writing-python-lambdas スキルを参照
+以下の観点でレビュー
 
 〈型ヒント〉
 

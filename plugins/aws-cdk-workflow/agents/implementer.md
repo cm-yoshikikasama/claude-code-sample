@@ -37,12 +37,6 @@ AWS CDK (TypeScript)とPython Lambdaの実装を担当します。
 - セキュリティベストプラクティス遵守
 - 過度なエンジニアリングを避ける（必要最小限の実装）
 
-## IAM Policy作成時の注意
-
-Lambda/GlueのPythonコードからIAMポリシーを生成する場合は、iam-policy-autopilot MCPを使用してください（.mcp.jsonで定義）。このMCPはソースコードの解析やAccessDeniedエラーからのポリシー生成をサポートします。
-
-- 生成後は必ずユーザーにポリシー内容の確認を依頼
-
 ## 情報調査が必要な場合
 
 不慣れなAWSサービスやライブラリがある場合は、実装前にdocs-researcherサブエージェントに調査を依頼してください。

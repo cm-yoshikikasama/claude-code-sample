@@ -149,14 +149,12 @@ Lambda関数実装の典型的なワークフロー
 ```text
 .mcp.json
 ├── context7              - ライブラリドキュメント取得
-├── iam-policy-autopilot  - IAMポリシー生成
 └── aws-diagram-mcp-server - AWS図表生成（Python diagrams）
 ```
 
 | MCP名 | 用途 | 使用例 |
 | --- | --- | --- |
 | context7 | ライブラリの最新ドキュメント取得 | 「boto3の最新APIを調べて」 |
-| iam-policy-autopilot | ソースコードからIAMポリシー生成 | 「このLambdaに必要な権限を生成して」 |
 | aws-diagram-mcp-server | Python diagramsでAWS構成図生成 | 「アーキテクチャ図をPNGで出力して」 |
 
 ### トークン最適化設定
@@ -213,7 +211,6 @@ Lambda関数実装の典型的なワークフロー
 | MCP                    | 理由                               |
 | ---------------------- | ---------------------------------- |
 | context7               | ドキュメント取得という単純なツール |
-| iam-policy-autopilot   | ポリシー生成という単純なツール     |
 | aws-diagram-mcp-server | 図生成という単純なツール           |
 
 #### 類似機能の使い分け

@@ -1,12 +1,8 @@
 {
-  "mcpServers": {
-    "context7": {
-      "command": "pnpm",
-      "args": ["dlx", "@upstash/context7-mcp"]
-    },
-    "iam-policy-autopilot": {
-      "command": "uvx",
-      "args": ["iam-policy-autopilot", "mcp-server"]
-    }
-  }
+	"mcpServers": {
+		"context7": {
+			"command": "pnpm",
+			"args": ["dlx", "@upstash/context7-mcp"]
+		}
+	}
 }

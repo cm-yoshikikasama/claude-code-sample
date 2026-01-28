@@ -1,7 +1,6 @@
 ---
 name: checking-aws-security
 description: Security checklist for AWS CDK implementations. Verify IAM minimum privileges, encryption settings, secret management, public access blocks. Use after implementing CDK stacks, before cdk synth, or during code reviews.
-context: fork
 ---
 
 # AWSセキュリティレビュー

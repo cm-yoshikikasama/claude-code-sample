@@ -3,7 +3,7 @@ name: design-doc-writer
 description: Design document agent. Create and update system design docs, AWS architecture diagrams (Mermaid or Diagram MCP), and technical specs. Generate AWS diagrams using method specified in plan file
 tools: Read, Write, Edit, Bash, Glob, Grep, mcp__*
 model: sonnet
-skills: creating-aws-diagrams, checking-aws-security
+skills: creating-aws-diagrams
 ---
 
 # 設計書作成エージェント
@@ -244,7 +244,7 @@ creating-aws-diagrams スキルを参照して、統合設計書用のMermaid図
 
 2. 詳細設計
    - プロジェクト種別に応じた技術設計
-   - IAM権限設計（checking-aws-security スキルを参照）
+   - IAM権限設計（暗号化、シークレット管理、最小権限の原則）
    - セキュリティ設計（暗号化、シークレット管理、最小権限の原則）
    - 図表を使って視覚的に表現
 
