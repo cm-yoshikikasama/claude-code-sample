@@ -346,6 +346,47 @@ cd claude-code-sample && pwd
 - permissions、env変数、statusLineはプラグインに含まれないため、各プロジェクトで個別設定が必要です
 - `enabledPlugins` のキーは `<プラグイン名>@<marketplace.jsonのname>` の形式です（`extraKnownMarketplaces` のキー名ではない）
 
+### プラグイン開発時の注意（キャッシュ問題）
+
+プラグインはインストール時に `~/.claude/plugins/cache/` にコピーされます。ソースファイルを変更しても、キャッシュ側は自動更新されません。
+
+プラグインの `.mcp.json`、`plugin.json`、agents、skills 等を変更した場合は、以下のいずれかの方法でキャッシュを更新してください。
+
+#### 方法1: プラグインの再インストール（推奨）
+
+1. `/plugin` コマンドでプラグイン一覧を開く
+2. 該当プラグインを選択
+3. Reinstall を実行
+
+#### 方法2: キャッシュの手動削除
+
+```bash
+# 特定プラグインのキャッシュを削除
+rm -rf ~/.claude/plugins/cache/<marketplace-name>/<plugin-name>/
+
+# 例: cm-kasama-plugins の aws-cdk-workflow プラグイン
+rm -rf ~/.claude/plugins/cache/cm-kasama-plugins/aws-cdk-workflow/
+
+# Claude Code を再起動
+```
+
+キャッシュのパス構造は以下のとおりです。
+
+```text
+~/.claude/plugins/
+├── cache/
+│   └── <marketplace-name>/
+│       └── <plugin-name>/
+│           └── <version>/
+│               ├── .claude-plugin/
+│               ├── .mcp.json          # ← ここがキャッシュされる
+│               ├── agents/
+│               ├── skills/
+│               └── hooks/
+├── config.json
+└── installed_plugins.json             # インストール済みプラグイン一覧
+```
+
 ## 詳細ガイドライン
 
 プロジェクトの詳細ルールは以下を参照
