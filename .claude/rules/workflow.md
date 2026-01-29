@@ -130,10 +130,19 @@ integration-testerの役割
 
 | エージェント | 責務 | ビルド検証 |
 | --- | --- | --- |
+| docs-researcher | 外部技術ドキュメント調査（AWS、CDK、ライブラリ等） | なし |
 | implementer | 実装コード作成 | なし |
 | reviewer | コードレビュー | なし |
 | unit-tester | 単体テスト作成・実行 | あり（pnpm run build, cdk synth） |
 | integration-tester | テスト項目書作成、参照系コマンドでエビデンス作成、Athenaデータ検証 | なし（デプロイ済み前提、長時間job実行はユーザー） |
+
+## 調査エージェントの使い分け
+
+| エージェント | 用途 | 例 |
+| --- | --- | --- |
+| docs-researcher | 外部技術ドキュメント調査（AWS、CDK、ライブラリ等） | 「CDK L2 Constructの使い方を調査」 |
+| Explore（組み込み） | コードベース内部の探索・構造把握 | 「src配下のファイル構造を調査」 |
+| claude-code-guide（組み込み） | Claude Code CLI、Agent SDK、Claude APIの使い方 | 「hooksの設定方法を調査」 |
 
 ## ファイル連携
 
@@ -143,9 +152,3 @@ integration-testerの役割
 
 - 計画ファイル: `.claude/plans/*.md`
 - 設計書: `(プロジェクト)/docs/design.md`
-- 調査レポート: `.tmp/research/*.md`
-
-## 一時ファイルの管理
-
-- `.tmp/research/`: 調査中の一時保存場所
-- 調査結果は必要に応じて設計書 (`(プロジェクト)/docs/`) に反映

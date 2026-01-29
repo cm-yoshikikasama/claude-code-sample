@@ -11,6 +11,73 @@ AWS CDK (TypeScript) + Python Lambdaプロジェクト。Claude Codeベストプ
 - Subagent、Skills、Rulesを活用した開発フロー
 - セキュリティベストプラクティスの適用
 
+## Subagentワークフロー概要
+
+このリポジトリでは、タスクに応じて適切なSubagentを選択し、品質の高い開発フローを実現します。
+
+```mermaid
+flowchart TB
+    subgraph Input["ユーザー入力"]
+        A[タスク依頼]
+    end
+
+    subgraph Research["調査フェーズ"]
+        R1[docs-researcher<br/>外部技術ドキュメント調査]
+        R2[Explore<br/>コードベース探索]
+        R3[claude-code-guide<br/>Claude Code使い方]
+    end
+
+    subgraph Design["設計フェーズ"]
+        D1[design-doc-writer<br/>設計書作成]
+    end
+
+    subgraph Implementation["実装フェーズ"]
+        I1[implementer<br/>コード実装]
+    end
+
+    subgraph Review["レビューフェーズ"]
+        RV1[reviewer<br/>コードレビュー]
+    end
+
+    subgraph Test["テストフェーズ"]
+        T1[unit-tester<br/>ビルド検証・単体テスト]
+        T2[integration-tester<br/>結合テスト・エビデンス作成]
+    end
+
+    A --> |"調査が必要?"| Research
+    A --> |"新規プロジェクト"| D1
+    A --> |"シンプル実装"| I1
+    A --> |"レビューのみ"| RV1
+
+    R1 --> I1
+    R2 --> I1
+    R3 --> I1
+    D1 --> I1
+    I1 --> RV1
+    RV1 --> |"修正あり"| I1
+    RV1 --> T1
+    T1 --> |"デプロイ後"| T2
+```
+
+### Subagent一覧
+
+| エージェント       | 責務                                               | ビルド検証 |
+| ------------------ | -------------------------------------------------- | ---------- |
+| docs-researcher    | 外部技術ドキュメント調査（AWS、CDK、ライブラリ等） | なし       |
+| design-doc-writer  | 設計書・アーキテクチャ図作成                       | なし       |
+| implementer        | 実装コード作成                                     | なし       |
+| reviewer           | コードレビュー                                     | なし       |
+| unit-tester        | 単体テスト作成・実行                               | あり       |
+| integration-tester | 結合テスト・エビデンス作成                         | なし       |
+
+### 調査エージェントの使い分け
+
+| エージェント                  | 用途                                           | 例                                 |
+| ----------------------------- | ---------------------------------------------- | ---------------------------------- |
+| docs-researcher               | 外部技術ドキュメント調査                       | 「CDK L2 Constructの使い方を調査」 |
+| Explore（組み込み）           | コードベース内部の探索                         | 「src配下のファイル構造を調査」    |
+| claude-code-guide（組み込み） | Claude Code CLI、Agent SDK、Claude APIの使い方 | 「hooksの設定方法を調査」          |
+
 ## プロジェクト構造
 
 ```text
@@ -210,18 +277,24 @@ claude-code
 Shift + TabでPlan Modeに入った状態で、Claude Codeに以下のようにプロンプトで依頼します。
 
 ```text
-sample_sfn_athena という新規プロジェクトを作成してください。
+sample_sfn_athena_iceberg という新規プロジェクトを作成してください。
 
 要件
 - AWS CDK (TypeScript) でインフラ構築
+- データソース: s3 (sampleのcsvファイルも生成)
+- アウトプット: s3 (Iceberg table)
 - Step Functions ステートマシンでAthena SQLクエリを実行
 - S3にクエリ結果を保存
 - EventBridgeで定期実行
+- iceberg tableは事前にddlで作成する手順です。
 
 以下の構造で作成してください
-- sample_sfn_athena/cdk: CDKプロジェクト (TypeScript)
-- sample_sfn_athena/sql: Athena SQLファイル
-- sample_sfn_athena/docs: 設計書とアーキテクチャ図
+- sample_sfn_athena_iceberg/cdk: CDKプロジェクト (TypeScript)
+- sample_sfn_athena_iceberg/sql: Athena SQLファイル
+- sample_sfn_athena_iceberg/docs: 設計書とアーキテクチャ図
+
+workflowにそってsubagentを活用して進めてください。
+planにもどのsubagentを使うか明示してください。
 ```
 
 ### 3. 自動実装フロー
@@ -370,23 +443,6 @@ rm -rf ~/.claude/plugins/cache/cm-kasama-plugins/aws-cdk-workflow/
 # Claude Code を再起動
 ```
 
-キャッシュのパス構造は以下のとおりです。
-
-```text
-~/.claude/plugins/
-├── cache/
-│   └── <marketplace-name>/
-│       └── <plugin-name>/
-│           └── <version>/
-│               ├── .claude-plugin/
-│               ├── .mcp.json          # ← ここがキャッシュされる
-│               ├── agents/
-│               ├── skills/
-│               └── hooks/
-├── config.json
-└── installed_plugins.json             # インストール済みプラグイン一覧
-```
-
 ## 詳細ガイドライン
 
 プロジェクトの詳細ルールは以下を参照
@@ -400,9 +456,9 @@ rm -rf ~/.claude/plugins/cache/cm-kasama-plugins/aws-cdk-workflow/
 
 ## ドキュメント
 
-| ドキュメント | 内容 |
-| --- | --- |
+| ドキュメント                                                | 内容                                                       |
+| ----------------------------------------------------------- | ---------------------------------------------------------- |
 | [Claude Code 6機能の使い分け](docs/claude_code_features.md) | MCP、Subagents、Skills、Rules、Hooks、Slash Commandsの詳細 |
-| [参考資料](docs/references.md) | Claude Code活用のためのリンク集、MCP詳細 |
-| [ベストプラクティス](docs/claude_code_best_practices.md) | CLAUDE.md、コンテキスト管理、Hooks等のベストプラクティス |
-| [コンテキストガイド](docs/claude_context_guide.md) | コンテキスト管理の詳細ガイド |
+| [参考資料](docs/references.md)                              | Claude Code活用のためのリンク集、MCP詳細                   |
+| [ベストプラクティス](docs/claude_code_best_practices.md)    | CLAUDE.md、コンテキスト管理、Hooks等のベストプラクティス   |
+| [コンテキストガイド](docs/claude_context_guide.md)          | コンテキスト管理の詳細ガイド                               |

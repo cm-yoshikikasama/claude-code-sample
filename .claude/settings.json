@@ -11,8 +11,8 @@
     }
   },
   "enabledPlugins": {
-    "typescript-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": false,
+    "pyright-lsp@claude-plugins-official": false,
     "aws-cdk-workflow@cm-kasama-plugins": true
   },
   "env": {
