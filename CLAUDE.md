@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-AWS CDK (TypeScript) + Pythonプロジェクト。Claude Codeベストプラクティスと実装サンプルを含みます。
+AWS CDK (TypeScript) + Pythonプロジェクト。Claude Codeベストプラクティスと実装サンプルを含みます。ユーザーが質問したとき（特に疑問符で終わっているとき）は、勝手に作業をしないで、まず質問に答えてください。
 
 ## プロジェクト構造
 

@@ -11,14 +11,15 @@
     }
   },
   "enabledPlugins": {
-    "typescript-lsp@claude-plugins-official": false,
-    "pyright-lsp@claude-plugins-official": false,
+    "typescript-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
     "aws-cdk-workflow@cm-kasama-plugins": true
   },
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "BASH_DEFAULT_TIMEOUT_MS": "120000",
-    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
+    "CLAUDE_CODE_TASK_LIST_ID": "claude-code-sample"
   },
   "permissions": {
     "allow": [
