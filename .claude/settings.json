@@ -1,20 +1,4 @@
 {
-  "model": "Opus",
-  "outputStyle": "Explanatory",
-  "plansDirectory": ".claude/plans",
-  "extraKnownMarketplaces": {
-    "cm-kasama-plugins": {
-      "source": {
-        "source": "directory",
-        "path": "/Users/kasama.yoshiki/Documents/git/claude-code-sample"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "typescript-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "aws-cdk-workflow@cm-kasama-plugins": true
-  },
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "BASH_DEFAULT_TIMEOUT_MS": "120000",
@@ -81,10 +65,7 @@
       "Bash(* cdk destroy *)"
     ]
   },
-  "statusLine": {
-    "type": "command",
-    "command": ".claude/statusline/statusline.sh"
-  },
+  "model": "Opus",
   "hooks": {
     "SubagentStop": [
       {
@@ -119,5 +100,24 @@
         ]
       }
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": ".claude/statusline/statusline.sh"
+  },
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "aws-cdk-workflow@cm-kasama-plugins": true
+  },
+  "extraKnownMarketplaces": {
+    "cm-kasama-plugins": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/kasama.yoshiki/Documents/git/claude-code-sample"
+      }
+    }
+  },
+  "outputStyle": "Explanatory",
+  "plansDirectory": ".claude/plans"
 }

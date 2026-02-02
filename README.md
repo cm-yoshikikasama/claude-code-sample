@@ -462,5 +462,3 @@ rm -rf ~/.claude/plugins/cache/cm-kasama-plugins/aws-cdk-workflow/
 | [参考資料](docs/references.md)                              | Claude Code活用のためのリンク集、MCP詳細                   |
 | [ベストプラクティス](docs/claude_code_best_practices.md)    | CLAUDE.md、コンテキスト管理、Hooks等のベストプラクティス   |
 | [コンテキストガイド](docs/claude_context_guide.md)          | コンテキスト管理の詳細ガイド                               |
-
-- 完了したタスクやplanは削除するようにしていきたいのでそのためのskillは別途作る予定。
